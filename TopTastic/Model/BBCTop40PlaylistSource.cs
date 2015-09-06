@@ -42,8 +42,9 @@ namespace TopTastic.Model
         public static BBCTop40PlaylistData ExtractPlaylistData(string html, bool descending = false)
         {
             var playlistData = new BBCTop40PlaylistData();
+            playlistData.Items = new List<BBCTop40PlaylistDataItem>();
             playlistData.Description = "UK Top 40 singles: http://www.bbc.co.uk/radio1/chart/singles";
-            playlistData.Title = string.Format("UK Top 40 {0:D} " + ExtractDate(html));
+            playlistData.Title = string.Format("UK Top 40 {0:D} ", ExtractDate(html));
             playlistData.SearchKeys = new List<string>();
 
             var regexChartItem = new Regex(@"<td>(?<Position>.*?)</td>.*?<td>(?<Status>.*?)</td>.*?<td>(?<Previous>.*?)</td>.*?<td>(?<Weeks>.*?).*?<td>(?<Artist>.*?)</td>.*?<td>(?<Title>.*?)</td>", RegexOptions.Singleline);
@@ -60,6 +61,8 @@ namespace TopTastic.Model
                     Artist = HtmlUtilities.ConvertToText(m.Groups["Artist"].Value),
                     Title = HtmlUtilities.ConvertToText(m.Groups["Title"].Value)
                 };
+
+                playlistData.Items.Add(item);
                
                 var searchKey = string.Format("{0} {1}", item.Artist, item.Title);
                 playlistData.SearchKeys.Add(searchKey);
