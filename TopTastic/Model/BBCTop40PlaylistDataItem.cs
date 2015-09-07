@@ -14,5 +14,6 @@ namespace TopTastic.Model
         public string Weeks { get; set; }
         public string Artist { get; set; }
         public string Title { get; set; }
+ 
     }
 }

@@ -9,5 +9,6 @@ namespace TopTastic.Model
     public interface IDataService
     {
         void GetPlaylistData(Action<BBCTop40PlaylistData, Exception> callback);
+        void GetThumnails(Action<IList<string>, Exception> callback);
     }
 }

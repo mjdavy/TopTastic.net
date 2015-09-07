@@ -12,23 +12,10 @@ namespace TopTastic.ViewModel
 {
     public class MainViewModel : ViewModelBase
     {
-        private string _helloWorld;
-        private IList<BBCTop40PlaylistDataItem> _playlistItems;
+        private ObservableCollection<PlaylistItemViewModel> _playlistItems;
         
 
-        public string HelloWorld
-        {
-            get
-            {
-                return _helloWorld;
-            }
-            set
-            {
-                Set(() => HelloWorld, ref _helloWorld, value);
-            }
-        }
-
-        public IList<BBCTop40PlaylistDataItem> PlaylistItems
+        public ObservableCollection<PlaylistItemViewModel> PlaylistItems
         {
             get
             {
@@ -43,22 +30,58 @@ namespace TopTastic.ViewModel
 
         public MainViewModel()
         {
-            HelloWorld = IsInDesignMode
-                ? "Runs in design mode"
-                : "Runs in runtime mode";
+            IDataService service = null;
 
-            var service = new DataService(); // MJDTODO - use DI
+            // MJDTODO - use DI
+            //if (IsInDesignMode)
+            //{
+            //    service = new MockDataService();
+            //}
+            //else
+            //{
+            //    service = new DataService(); 
+            //}
+            service = new DataService();
+            this.InitializePlaylistItems(service);
+        }
 
+        void InitializePlaylistItems(IDataService service)
+        {
             service.GetPlaylistData((playlistData, err) =>
             {
-                if (err != null)
+                if (err == null)
+                {
+                    var playlistItems = new ObservableCollection<PlaylistItemViewModel>();
+                    foreach (var item in playlistData.Items)
+                    {
+                        playlistItems.Add(new PlaylistItemViewModel(item));
+                    }
+                    this.PlaylistItems = playlistItems;
+                    this.UpdateThumbnails(service);
+                }
+                else
                 {
                     /// if there is an error should create a property and bind to it for better practices
                     System.Diagnostics.Debug.WriteLine(err.ToString());
                 }
+            });
+        }
+
+        void UpdateThumbnails(IDataService service)
+        {
+            service.GetThumnails((thumbnails, err) =>
+            {
+                if (err == null)
+                {
+                    for(int i=0; i<PlaylistItems.Count; i++)
+                    {
+                        PlaylistItems[i].Thumbnail = thumbnails[i];
+                    }
+                }
                 else
                 {
-                    this.PlaylistItems = playlistData.Items;
+                    /// if there is an error should create a property and bind to it for better practices
+                    System.Diagnostics.Debug.WriteLine(err.ToString());
                 }
             });
         }

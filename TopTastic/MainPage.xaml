@@ -5,7 +5,7 @@
     xmlns:local="using:TopTastic"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d" DataContext="{Binding Main.HelloWorld, Source={StaticResource Locator}}">
+    mc:Ignorable="d" DataContext="{Binding Main, Source={StaticResource Locator}}">
     <Page.Resources>
         <DataTemplate x:Key="BBCTop40PlaylistDataItemTemplate">
             <Grid Height="110" Width="480" Margin="10" >
@@ -14,7 +14,7 @@
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 <Border Background="{StaticResource ListViewItemPlaceholderBackgroundThemeBrush}" Width="110" Height="110">
-                    <Image Height="110" Width="110"/>
+                    <Image Height="110" Width="110" Source="{Binding Thumbnail}"/>
                 </Border>
                 <StackPanel Grid.Column="1" Margin="10,0,0,0">
                     <TextBlock Text="{Binding Artist}" Style="{StaticResource TitleTextBlockStyle}"/>
@@ -24,7 +24,7 @@
         </DataTemplate>
     </Page.Resources>
 
-    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" DataContext="{Binding Source={StaticResource Locator}}">
-        <ListView x:Name="listView" HorizontalAlignment="Left" ItemTemplate="{StaticResource BBCTop40PlaylistDataItemTemplate}" ItemsSource="{Binding Main.PlaylistItems}" Margin="19,12,19,0" VerticalAlignment="Top"/>
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <ListView x:Name="listView" HorizontalAlignment="Left" ItemTemplate="{StaticResource BBCTop40PlaylistDataItemTemplate}" ItemsSource="{Binding PlaylistItems}" Margin="19,12,19,0" VerticalAlignment="Top"/>
     </Grid>
 </Page>
