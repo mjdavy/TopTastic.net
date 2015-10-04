@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MyToolkit.Multimedia;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,6 +10,7 @@ namespace TopTastic.Model
     public interface IDataService
     {
         void GetPlaylistData(Action<BBCTop40PlaylistData, Exception> callback);
-        void GetThumnails(Action<IList<string>, Exception> callback);
+        void GetThumnails(IPlaylistData playlistData, Action<IList<Tuple<string,string>>, Exception> callback);
+        void GetYoutubeVideoUri(string videoId, Action<YouTubeUri, Exception> callback);
     }
 }

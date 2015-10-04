@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MyToolkit.Multimedia;
 using Windows.Storage;
 
 namespace TopTastic.Model
@@ -27,7 +28,12 @@ namespace TopTastic.Model
             callback(playlistData, err);
         }
 
-        public void GetThumnails(Action<IList<string>, Exception> callback)
+        public void GetThumnails(IPlaylistData playlistData, Action<IList<Tuple<string, string>>, Exception> callback)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void GetYoutubeVideoUri(string videoId, Action<YouTubeUri, Exception> callback)
         {
             throw new NotImplementedException();
         }

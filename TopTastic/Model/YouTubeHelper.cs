@@ -28,7 +28,7 @@ namespace TopTastic
         {
         }
 
-        public static async Task<YouTubeService> Authenticate(string user)
+        public static async Task<YouTubeService> CreateAuthenticatedService(string user, string applicationName)
         {
             // Authorization
             UserCredential credential;
@@ -45,11 +45,22 @@ namespace TopTastic
             var service = new YouTubeService(new BaseClientService.Initializer()
             {
                 HttpClientInitializer = credential,
-                ApplicationName = "Top40",
+                ApplicationName = applicationName,
             });
 
             return service;
+        }
 
+        public static YouTubeService CreateService(string applicationName)
+        {
+            // Create the service.
+            var service = new YouTubeService(new BaseClientService.Initializer()
+            {
+                ApiKey = "AIzaSyAAgEriOPPuK_eVLn-RGaOsFw8SHjVl0tg",
+                ApplicationName = applicationName
+            });
+
+            return service;
         }
 
         public static async Task<string> CreatePlaylist(YouTubeService service, string title, string description)
@@ -191,6 +202,18 @@ namespace TopTastic
             req.Order = SearchResource.ListRequest.OrderEnum.Relevance;
             var resp = await req.ExecuteAsync();
             return resp.Items;
+        }
+
+        public static ThumbnailDetails GetThumnailDetails(SearchResult result)
+        {
+            var snippet = result.Snippet;
+            return snippet.Thumbnails;
+        }
+
+        public static string GetVideoId(SearchResult result)
+        {
+            var id = result.Id;
+            return id.VideoId;
         }
 
         public static string DeletePlaylist(YouTubeService service, string playlistId)

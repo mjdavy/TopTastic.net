@@ -1,4 +1,5 @@
 ﻿using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.Messaging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +12,9 @@ namespace TopTastic.ViewModel
     public class PlaylistItemViewModel : ViewModelBase
     {
         BBCTop40PlaylistDataItem item;
-        string imageUrl = null; 
+        string imageUrl = null;
+        string videoId = null;
+        private Uri videoUri;
 
         public PlaylistItemViewModel(BBCTop40PlaylistDataItem item)
         {
@@ -40,5 +43,28 @@ namespace TopTastic.ViewModel
             }
         }
 
+        public string VideoId
+        {
+            get
+            {
+                return this.videoId;
+            }
+            set
+            {
+                Set(() => VideoId, ref this.videoId, value);
+            }
+        }
+
+        public Uri VideoUri
+        {
+            get
+            {
+                return this.videoUri;
+            }
+            set
+            {
+                Set(() => VideoUri, ref this.videoUri, value);
+            }
+        }
     }
 }

@@ -1,8 +1,10 @@
-﻿using System;
+﻿using Google.Apis.YouTube.v3;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MyToolkit.Multimedia;
 
 namespace TopTastic.Model
 {
@@ -26,16 +28,55 @@ namespace TopTastic.Model
             callback(playlistData, err);
         }
 
-        public void GetThumnails(Action<IList<string>, Exception> callback)
+        public async void GetThumnails(IPlaylistData playlistData, Action<IList<Tuple<string, string>>, Exception> callback)
         {
-            var testurl = @"https://yt3.ggpht.com/-sxaZFRBWPHU/AAAAAAAAAAI/AAAAAAAAAAA/XvrEJtXxRbQ/s88-c-k-no/photo.jpg";
-            var testThumbs = new List<string>();
-            for(int i=0; i<40; i++)
+            // MJDTODO - update to local resource
+            var defaultThumbnail = new Tuple<string, string>(string.Empty, @"https://yt3.ggpht.com/-sxaZFRBWPHU/AAAAAAAAAAI/AAAAAAAAAAA/XvrEJtXxRbQ/s88-c-k-no/photo.jpg");
+            var thumbnails = new List<Tuple<string,string>>();
+            Exception ex = null;
+
+            try
             {
-                testThumbs.Add(testurl);
+                YouTubeService service = YouTubeHelper.CreateService("Top40");
+                foreach (var searchKey in playlistData.SearchKeys)
+                {
+                    var results = await YouTubeHelper.SearchVideos(service, searchKey);
+
+                    if (results.Count == 0)
+                    {
+                        thumbnails.Add(defaultThumbnail);
+                    }
+                    else
+                    {
+                        var firstResult = results.First();
+                        var details = YouTubeHelper.GetThumnailDetails(firstResult);
+                        var thumbnail = new Tuple<string, string>(firstResult.Id.VideoId, details.Default__.Url);
+                        thumbnails.Add(thumbnail);
+                    }
+                    
+                }
             }
-            callback(testThumbs, null);
+            catch(Exception e)
+            {
+                ex = e;
+            }
+            callback(thumbnails, ex);
         }
 
+        public async void GetYoutubeVideoUri(string videoId,  Action<YouTubeUri, Exception> callback)
+        {
+            Exception ex = null;
+            YouTubeUri youTubeUri = null;
+            try
+            {
+                youTubeUri = await YouTube.GetVideoUriAsync(videoId, YouTubeQuality.Quality720P);
+            }
+            catch(Exception e)
+            {
+                ex = e;
+            }
+
+            callback(youTubeUri, ex);
+        }
     }
 }
