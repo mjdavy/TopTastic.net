@@ -11,6 +11,11 @@ namespace TopTastic.Model
 {
     public class MockDataService : IDataService
     {
+        public void CreatePlaylist(IPlaylistData playlistData, Action<string, Exception> callback)
+        {
+            throw new NotImplementedException();
+        }
+
         public async void GetPlaylistData(Action<BBCTop40PlaylistData, Exception> callback)
         {
             var testFilePath = Path.Combine(ApplicationData.Current.LocalFolder.Path, "TestChart.html");

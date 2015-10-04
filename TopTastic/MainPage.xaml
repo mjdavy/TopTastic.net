@@ -25,11 +25,16 @@
     </Page.Resources>
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        <ListView x:Name="listView" HorizontalAlignment="Left" ItemTemplate="{StaticResource BBCTop40PlaylistDataItemTemplate}" ItemsSource="{Binding PlaylistItems}" SelectedItem="{Binding SelectedItem, Mode=TwoWay}" Margin="19,12,19,0" VerticalAlignment="Top"/>
-        <MediaElement x:Name="player" Grid.Column="1" Source="{Binding PlayerUri}"/>
+        <Button Command="{Binding CreateYoutubePlaylistCommand}" Margin="16,0,0,0">Create Youtube Playlist</Button>
+        <ListView Grid.Row="1" x:Name="listView" HorizontalAlignment="Left" ItemTemplate="{StaticResource BBCTop40PlaylistDataItemTemplate}" ItemsSource="{Binding PlaylistItems}" SelectedItem="{Binding SelectedItem, Mode=TwoWay}" Margin="19,12,19,0" VerticalAlignment="Top"/>
+        <MediaElement Grid.Row="1" x:Name="player" Grid.Column="1" Source="{Binding PlayerUri}"/>
     </Grid>
 </Page>

@@ -33,11 +33,8 @@ namespace TopTastic
             // Authorization
             UserCredential credential;
 
-            Uri clientSecretsUri= new Uri(
-                Path.Combine(ApplicationData.Current.LocalFolder.Path, "client_secrets.json"));
-           
-
-            credential = await GoogleWebAuthorizationBroker.AuthorizeAsync(clientSecretsUri,
+            credential = await GoogleWebAuthorizationBroker.AuthorizeAsync(
+                new Uri("ms-appx:///Assets/client_secrets.json"),
                 new[] { YouTubeService.Scope.Youtube }, user, CancellationToken.None);
 
          

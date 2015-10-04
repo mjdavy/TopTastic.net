@@ -1,4 +1,5 @@
 ﻿using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.Command;
 using Microsoft.Practices.ServiceLocation;
 using System;
 using System.Collections.Generic;
@@ -16,6 +17,13 @@ namespace TopTastic.ViewModel
         private PlaylistItemViewModel _selectedItem;
         private IDataService _service;
         private Uri _playerUri;
+        private IPlaylistData _playlistData;
+
+        public RelayCommand CreateYoutubePlaylistCommand
+        {
+            get;
+            private set;
+        }
 
         public ObservableCollection<PlaylistItemViewModel> PlaylistItems
         {
@@ -26,6 +34,7 @@ namespace TopTastic.ViewModel
             set
             {
                 Set(() => PlaylistItems, ref _playlistItems, value);
+                CreateYoutubePlaylistCommand.RaiseCanExecuteChanged();
             }
         }
 
@@ -57,7 +66,6 @@ namespace TopTastic.ViewModel
 
         public MainViewModel()
         {
-            _service = null;
 
             // MJDTODO - use DI
             //if (IsInDesignMode)
@@ -68,8 +76,11 @@ namespace TopTastic.ViewModel
             //{
             //    service = new DataService(); 
             //}
+            
             _service = new DataService();
             this.InitializePlaylistItems(_service);
+            this.CreateYoutubePlaylistCommand = new RelayCommand(CreatePlaylist, CanCreatePlaylist);
+
         }
 
         void InitializePlaylistItems(IDataService service)
@@ -83,8 +94,10 @@ namespace TopTastic.ViewModel
                     {
                         playlistItems.Add(new PlaylistItemViewModel(item));
                     }
+                    this._playlistData = playlistData;
                     this.PlaylistItems = playlistItems;
-                    this.UpdateThumbnails(playlistData, service);
+                    this.UpdateThumbnails(service, playlistData);
+                    
                 }
                 else
                 {
@@ -94,7 +107,7 @@ namespace TopTastic.ViewModel
             });
         }
 
-        void UpdateThumbnails(BBCTop40PlaylistData playlistData, IDataService service)
+        void UpdateThumbnails(IDataService service, BBCTop40PlaylistData playlistData)
         {
             service.GetThumnails(playlistData,(thumbnails, err) =>
             {
@@ -129,6 +142,28 @@ namespace TopTastic.ViewModel
                 }
             });
 
+        }
+
+        void CreatePlaylist()
+        {
+            _service.CreatePlaylist(_playlistData, (playlistid, err) =>
+            {
+                if (err == null)
+                {
+                    // MJDTODO
+                    System.Diagnostics.Debug.WriteLine(playlistid);
+                }
+                else
+                {
+                    /// if there is an error should create a property and bind to it for better practices
+                    System.Diagnostics.Debug.WriteLine(err.ToString());
+                }
+            });
+        }
+
+        bool CanCreatePlaylist()
+        {
+            return this.PlaylistItems != null && this.PlaylistItems.Count > 0;
         }
     }
 }

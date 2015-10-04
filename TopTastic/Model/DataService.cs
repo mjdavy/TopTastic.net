@@ -10,6 +10,24 @@ namespace TopTastic.Model
 {
     public class DataService : IDataService
     {
+        public async void CreatePlaylist(IPlaylistData playlistData, Action<string, Exception> callback)
+        {
+            string playlistId = null;
+            Exception ex = null;
+
+            try
+            {
+                var service = await YouTubeHelper.CreateAuthenticatedService("martin.davy@gmail.com","Top40");
+                playlistId = await YouTubeHelper.CreatePlaylistFromData(service, playlistData);
+            }
+            catch (Exception e)
+            {
+                ex = e;
+            }
+
+            callback(playlistId, ex);
+        }
+
         public async void GetPlaylistData(Action<BBCTop40PlaylistData, Exception> callback)
         {
             var playlistSource = new BBCTop40PlaylistSource();
