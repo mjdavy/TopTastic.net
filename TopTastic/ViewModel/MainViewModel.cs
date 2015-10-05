@@ -66,20 +66,17 @@ namespace TopTastic.ViewModel
 
         public MainViewModel()
         {
-
-            // MJDTODO - use DI
-            //if (IsInDesignMode)
-            //{
-            //    service = new MockDataService();
-            //}
-            //else
-            //{
-            //    service = new DataService(); 
-            //}
-            
-            _service = new DataService();
-            this.InitializePlaylistItems(_service);
+            if (IsInDesignMode)
+            {
+                _service = new MockDataService();
+            }
+            else
+            {
+                _service = new DataService();
+            }
+           
             this.CreateYoutubePlaylistCommand = new RelayCommand(CreatePlaylist, CanCreatePlaylist);
+            this.InitializePlaylistItems(_service);
 
         }
 

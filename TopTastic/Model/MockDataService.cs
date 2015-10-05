@@ -18,13 +18,14 @@ namespace TopTastic.Model
 
         public async void GetPlaylistData(Action<BBCTop40PlaylistData, Exception> callback)
         {
-            var testFilePath = Path.Combine(ApplicationData.Current.LocalFolder.Path, "TestChart.html");
+            var testFileUri = new Uri("ms-appx:///Assets/TestChart.html");
             BBCTop40PlaylistData playlistData = null;
             Exception err = null;
             try
             {
-                var file = await StorageFile.GetFileFromPathAsync(testFilePath);
-                var data = await FileIO.ReadTextAsync(file);
+                var file = await StorageFile.GetFileFromApplicationUriAsync(testFileUri);
+                var html = await FileIO.ReadTextAsync(file);
+                playlistData = BBCTop40PlaylistSource.ExtractPlaylistData(html);
             }
             catch(Exception ex)
             {
@@ -35,12 +36,27 @@ namespace TopTastic.Model
 
         public void GetThumnails(IPlaylistData playlistData, Action<IList<Tuple<string, string>>, Exception> callback)
         {
-            throw new NotImplementedException();
+            var defaultThumbnail = new Tuple<string, string>("DK_0jXPuIr0", "ms-appx:///Assets/p030kf95.jpg");
+            var thumbnails = new List<Tuple<string, string>>();
+            Exception ex = null;
+
+            try
+            {
+                foreach (var searchKey in playlistData.SearchKeys)
+                {
+                    thumbnails.Add(defaultThumbnail);
+                }
+            }
+            catch (Exception e)
+            {
+                ex = e;
+            }
+            callback(thumbnails, ex);
         }
 
         public void GetYoutubeVideoUri(string videoId, Action<YouTubeUri, Exception> callback)
         {
-            throw new NotImplementedException();
+            
         }
     }
 }

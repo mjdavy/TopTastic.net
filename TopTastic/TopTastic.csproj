@@ -125,6 +125,7 @@
     <None Include="TopTastic_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Assets\p030kf95.jpg" />
     <Content Include="Assets\TestChart.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

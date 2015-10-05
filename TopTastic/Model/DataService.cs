@@ -48,8 +48,7 @@ namespace TopTastic.Model
 
         public async void GetThumnails(IPlaylistData playlistData, Action<IList<Tuple<string, string>>, Exception> callback)
         {
-            // MJDTODO - update to local resource
-            var defaultThumbnail = new Tuple<string, string>(string.Empty, @"https://yt3.ggpht.com/-sxaZFRBWPHU/AAAAAAAAAAI/AAAAAAAAAAA/XvrEJtXxRbQ/s88-c-k-no/photo.jpg");
+            var defaultThumbnail = new Tuple<string, string>("DK_0jXPuIr0", "ms-appx:///Assets/p030kf95.jpg");
             var thumbnails = new List<Tuple<string,string>>();
             Exception ex = null;
 
