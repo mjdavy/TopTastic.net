@@ -109,6 +109,7 @@
     <Compile Include="Model\BBCTop40PlaylistDataItem.cs" />
     <Compile Include="Model\BBCTop40PlaylistSource.cs" />
     <Compile Include="Model\DataService.cs" />
+    <Compile Include="Model\ExtensionMethods.cs" />
     <Compile Include="Model\IDataService.cs" />
     <Compile Include="Model\IPlaylistData.cs" />
     <Compile Include="Model\MockDataService.cs" />
@@ -125,10 +126,14 @@
     <None Include="TopTastic_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Assets\DownArrow.png" />
     <Content Include="Assets\p030kf95.jpg" />
+    <Content Include="Assets\Rectangle.png" />
+    <Content Include="Assets\Star.png" />
     <Content Include="Assets\TestChart.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Assets\UpArrow.png" />
     <Content Include="Properties\Default.rd.xml" />
     <Content Include="Assets\LockScreenLogo.scale-200.png" />
     <Content Include="Assets\SplashScreen.scale-200.png" />
@@ -148,7 +153,11 @@
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <SDKReference Include="BehaviorsXamlSDKManaged, Version=12.0">
+      <Name>BehaviorsXamlSDKManaged</Name>
+    </SDKReference>
+  </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>
