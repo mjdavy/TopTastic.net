@@ -68,7 +68,7 @@ namespace TopTastic.ViewModel
         {
             if (IsInDesignMode)
             {
-                _service = new MockDataService();
+                _service = new DataService();
             }
             else
             {

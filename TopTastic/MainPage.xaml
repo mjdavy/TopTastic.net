@@ -11,20 +11,25 @@
             <Grid Height="110" Width="480" Margin="10" >
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
-                <Border Background="{StaticResource ListViewItemPlaceholderBackgroundThemeBrush}" Width="110" Height="110">
+                <StackPanel Orientation="Vertical" VerticalAlignment="Top">
+                    <TextBlock Text="{Binding Position, Mode=OneWay}" HorizontalAlignment="Left" Style="{StaticResource TitleTextBlockStyle}" FontSize="32" Foreground="White" Padding="0,0,10,0" d:LayoutOverrides="LeftPosition, RightPosition, TopPosition, BottomPosition"/>
+                </StackPanel>
+                <Border Background="{StaticResource ListViewItemPlaceholderBackgroundThemeBrush}" Width="110" Height="110" Grid.Column="1">
                     <Image Height="110" Width="110" Source="{Binding Thumbnail}"/>
                 </Border>
-                <StackPanel Grid.Column="1" Margin="10,0,0,0">
-                    <TextBlock Text="{Binding Artist}" Style="{StaticResource TitleTextBlockStyle}"/>
-                    <TextBlock Text="{Binding Title}" Style="{StaticResource CaptionTextBlockStyle}" TextWrapping="NoWrap"/>
+                <StackPanel Grid.Column="2" Margin="10,0,0,0">
+                    <TextBlock Text="{Binding Title}" Style="{StaticResource TitleTextBlockStyle}" TextWrapping="WrapWholeWords" Foreground="White"/>
+                    <TextBlock Text="{Binding Artist}" Style="{StaticResource SubtitleTextBlockStyle}" Foreground="#FF8CB4BA"/>
+                    <TextBlock Text="{Binding Status, Mode=OneWay}" HorizontalAlignment="Left" VerticalAlignment="Top" Style="{StaticResource BaseTextBlockStyle}" Foreground="#FF7B7D7F"/>
                 </StackPanel>
             </Grid>
         </DataTemplate>
     </Page.Resources>
 
-    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    <Grid Background="Black">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
@@ -33,7 +38,7 @@
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        <Button Command="{Binding CreateYoutubePlaylistCommand}" Margin="16,0,0,0">Create Youtube Playlist</Button>
+        <!--<Button Command="{Binding CreateYoutubePlaylistCommand}" Margin="16,0,0,0">Create Youtube Playlist</Button>-->
         <ListView Grid.Row="1" x:Name="listView" HorizontalAlignment="Left" ItemTemplate="{StaticResource BBCTop40PlaylistDataItemTemplate}" ItemsSource="{Binding PlaylistItems}" SelectedItem="{Binding SelectedItem, Mode=TwoWay}" Margin="19,12,19,0" VerticalAlignment="Top"/>
         <MediaElement Grid.Row="1" x:Name="player" Grid.Column="1" Source="{Binding PlayerUri}"/>
     </Grid>

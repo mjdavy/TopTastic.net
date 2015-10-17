@@ -55,9 +55,9 @@ namespace TopTastic.Model
                 var item = new BBCTop40PlaylistDataItem()
                 {
                     Position = HtmlUtilities.ConvertToText(m.Groups["Position"].Value),
-                    Status = HtmlUtilities.ConvertToText(m.Groups["Position"].Value),
-                    Weeks = HtmlUtilities.ConvertToText(m.Groups["Position"].Value),
-                    Previous = HtmlUtilities.ConvertToText(m.Groups["Position"].Value),
+                    Status = HtmlUtilities.ConvertToText(m.Groups["Status"].Value),
+                    Weeks = HtmlUtilities.ConvertToText(m.Groups["Weeks"].Value),
+                    Previous = HtmlUtilities.ConvertToText(m.Groups["Previous"].Value),
                     Artist = HtmlUtilities.ConvertToText(m.Groups["Artist"].Value),
                     Title = HtmlUtilities.ConvertToText(m.Groups["Title"].Value)
                 };

@@ -26,7 +26,7 @@ namespace TopTastic.ViewModel
         }
 
         public string Position { get { return item.Position; }}
-        public string Status { get { return item.Status; } }
+        public string Status { get { return item.Status.ToUpper(); } }
         public string Previous { get { return item.Previous; } }
         public string Weeks { get { return item.Weeks; } }
         public string Artist { get { return item.Artist; } }
