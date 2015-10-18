@@ -93,7 +93,7 @@ namespace TopTastic.ViewModel
                     }
                     this._playlistData = playlistData;
                     this.PlaylistItems = playlistItems;
-                    this.UpdateThumbnails(service, playlistData);
+                    this.UpdateVideoInfo(service, playlistData);
                     
                 }
                 else
@@ -104,16 +104,17 @@ namespace TopTastic.ViewModel
             });
         }
 
-        void UpdateThumbnails(IDataService service, BBCTop40PlaylistData playlistData)
+        void UpdateVideoInfo(IDataService service, BBCTop40PlaylistData playlistData)
         {
-            service.GetThumnails(playlistData,(thumbnails, err) =>
+            service.GetVideoInfo(playlistData,(videos, err) =>
             {
                 if (err == null)
                 {
-                    for(int i=0; i<PlaylistItems.Count; i++)
+                    foreach(var video in videos)
                     {
-                        PlaylistItems[i].VideoId = thumbnails[i].Item1;
-                        PlaylistItems[i].Thumbnail = thumbnails[i].Item2;
+                        PlaylistItems[video.Index].VideoId = video.VideoId;
+                        PlaylistItems[video.Index].Thumbnail =video.ThumbnailUrl;
+                        PlaylistItems[video.Index].VideoId = video.VideoId;
                     }
                 }
                 else

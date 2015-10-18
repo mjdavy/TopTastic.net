@@ -34,24 +34,25 @@ namespace TopTastic.Model
             callback(playlistData, err);
         }
 
-        public void GetThumnails(IPlaylistData playlistData, Action<IList<Tuple<string, string>>, Exception> callback)
+        public void GetVideoInfo(IPlaylistData playlistData, Action<IList<VideoInfo>, Exception> callback)
         {
-            var defaultThumbnail = new Tuple<string, string>("DK_0jXPuIr0", "ms-appx:///Assets/p030kf95.jpg");
-            var thumbnails = new List<Tuple<string, string>>();
+ 
+            var videoList = new List<VideoInfo>();
             Exception ex = null;
 
             try
             {
+                int index = 0;
                 foreach (var searchKey in playlistData.SearchKeys)
                 {
-                    thumbnails.Add(defaultThumbnail);
+                    videoList.Add(new VideoInfo(index++, "ms-appx:///Assets/p030kf95.jpg", "DK_0jXPuIr0"));
                 }
             }
             catch (Exception e)
             {
                 ex = e;
             }
-            callback(thumbnails, ex);
+            callback(videoList, ex);
         }
 
         public void GetYoutubeVideoUri(string videoId, Action<YouTubeUri, Exception> callback)

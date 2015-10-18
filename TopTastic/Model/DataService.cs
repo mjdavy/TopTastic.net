@@ -46,14 +46,14 @@ namespace TopTastic.Model
             callback(playlistData, err);
         }
 
-        public async void GetThumnails(IPlaylistData playlistData, Action<IList<Tuple<string, string>>, Exception> callback)
-        {
-            var defaultThumbnail = new Tuple<string, string>("DK_0jXPuIr0", "ms-appx:///Assets/p030kf95.jpg");
-            var thumbnails = new List<Tuple<string,string>>();
+        public async void GetVideoInfo(IPlaylistData playlistData, Action<IList<VideoInfo>, Exception> callback)
+        { 
+            var videoList = new List<VideoInfo>();
             Exception ex = null;
 
             try
             {
+                int index = 0;
                 YouTubeService service = YouTubeHelper.CreateService("Top40");
                 foreach (var searchKey in playlistData.SearchKeys)
                 {
@@ -61,23 +61,26 @@ namespace TopTastic.Model
 
                     if (results.Count == 0)
                     {
-                        thumbnails.Add(defaultThumbnail);
+                        var video = new VideoInfo(index, "ms-appx:///Assets/p030kf95.jpg", "DK_0jXPuIr0");
+                        videoList.Add(video);
                     }
                     else
                     {
                         var firstResult = results.First();
                         var details = YouTubeHelper.GetThumnailDetails(firstResult);
-                        var thumbnail = new Tuple<string, string>(firstResult.Id.VideoId, details.Default__.Url);
-                        thumbnails.Add(thumbnail);
+                        var video = new VideoInfo(index, details.Default__.Url, firstResult.Id.VideoId);
+                        videoList.Add(video);
                     }
-                    
+                    index++;
+                    callback(videoList, ex);
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 ex = e;
+                callback(new List<VideoInfo>(), ex);
             }
-            callback(thumbnails, ex);
+            
         }
 
         public async void GetYoutubeVideoUri(string videoId,  Action<YouTubeUri, Exception> callback)

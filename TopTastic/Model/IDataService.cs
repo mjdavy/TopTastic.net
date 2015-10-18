@@ -10,7 +10,7 @@ namespace TopTastic.Model
     public interface IDataService
     {
         void GetPlaylistData(Action<BBCTop40PlaylistData, Exception> callback);
-        void GetThumnails(IPlaylistData playlistData, Action<IList<Tuple<string,string>>, Exception> callback);
+        void GetVideoInfo(IPlaylistData playlistData, Action<IList<VideoInfo>, Exception> callback);
         void GetYoutubeVideoUri(string videoId, Action<YouTubeUri, Exception> callback);
         void CreatePlaylist(IPlaylistData playlistData, Action<string, Exception> callback);
     }
