@@ -26,9 +26,10 @@
                     <Image Height="110" Width="110" Source="{Binding Thumbnail}"/>
                 </Border>
                 <StackPanel Grid.Column="2" Margin="10,0,0,0">
-                    <TextBlock Text="{Binding Title}" Style="{StaticResource TitleTextBlockStyle}" TextWrapping="WrapWholeWords" Foreground="White"/>
-                    <TextBlock Text="{Binding Artist}" Style="{StaticResource SubtitleTextBlockStyle}" Foreground="#FF8CB4BA"/>
-                    <TextBlock Text="{Binding Status, Mode=OneWay}" HorizontalAlignment="Left" VerticalAlignment="Top" Style="{StaticResource BaseTextBlockStyle}" Foreground="#FF7B7D7F"/>
+                    <TextBlock Text="{Binding Title}" Style="{StaticResource TitleTextBlockStyle}" TextWrapping="WrapWholeWords" Foreground="White" FontSize="21.333" TextTrimming="WordEllipsis"/>
+                    <TextBlock Text="{Binding Artist}" Style="{StaticResource SubtitleTextBlockStyle}" Foreground="#FF8CB4BA" FontSize="18.667"/>
+                    <TextBlock Text="{Binding Status, Mode=OneWay}" HorizontalAlignment="Left" VerticalAlignment="Top" Style="{StaticResource BaseTextBlockStyle}" Foreground="#FF7D7D7D" FontSize="13.333"/>
+                    <TextBlock Text="{Binding Weeks, Mode=OneWay}" HorizontalAlignment="Left" VerticalAlignment="Top" Foreground="#FF7D7D7D" FontSize="13.333"/>
                 </StackPanel>
             </Grid>
         </DataTemplate>
@@ -38,30 +39,31 @@
         <Binding Path="Main" Source="{StaticResource Locator}"/>
     </Page.DataContext>
 
-   
-        <Grid Background="Black">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="*" />
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-            <!--<Button Command="{Binding CreateYoutubePlaylistCommand}" Margin="16,0,0,0">Create Youtube Playlist</Button>-->
-            <ListView Grid.Row="1" x:Name="listView" HorizontalAlignment="Left" ItemTemplate="{StaticResource BBCTop40PlaylistDataItemTemplate}" ItemsSource="{Binding PlaylistItems}" SelectedItem="{Binding SelectedItem, Mode=TwoWay}" Margin="19,12,19,0" VerticalAlignment="Top"/>
-        <Border Grid.Row="1" Grid.Column="1" >
-            <MediaElement x:Name="player" 
-                          AreTransportControlsEnabled="True"
-                          Source="{Binding PlayerUri}" 
-                          HorizontalAlignment="Right" 
-                          VerticalAlignment="Top">
-                <MediaElement.TransportControls>
-                    <MediaTransportControls IsCompact="True" Background="Black"/>
-                </MediaElement.TransportControls>
 
-            </MediaElement>
+    <Grid Background="#FF323232">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="4*"/>
+            <ColumnDefinition Width="6*"/>
+        </Grid.ColumnDefinitions>
+        <!--<Button Command="{Binding CreateYoutubePlaylistCommand}" Margin="16,0,0,0">Create Youtube Playlist</Button>-->
+        <ListView Grid.Row="1" x:Name="listView" HorizontalAlignment="Left" ItemTemplate="{StaticResource BBCTop40PlaylistDataItemTemplate}" ItemsSource="{Binding PlaylistItems}" SelectedItem="{Binding SelectedItem, Mode=TwoWay}" Margin="10,10,0,0" VerticalAlignment="Top"/>
+        <Border Grid.Row="1" Grid.Column="1" Margin="0" BorderThickness="0" Background="Black">
+            <StackPanel HorizontalAlignment="Right" Orientation="Vertical" VerticalAlignment="Top">
+                <TextBlock Text="{Binding SelectedItem.ArtistAndTitle, Mode=OneWay}" HorizontalAlignment="Center" VerticalAlignment="Top" Style="{StaticResource TitleTextBlockStyle}" Foreground="White" MaxLines="1"/>
+                <MediaElement x:Name="player" 
+            		AreTransportControlsEnabled="True"
+            		Source="{Binding PlayerUri}" 
+            		Margin="10" d:LayoutOverrides="LeftPosition, RightPosition">
+                    <MediaElement.TransportControls>
+                        <MediaTransportControls IsCompact="True" Background="#FF7D7D7D"/>
+                    </MediaElement.TransportControls>
+                </MediaElement>
+            </StackPanel>
         </Border>
     </Grid>
-   
+
 </Page>

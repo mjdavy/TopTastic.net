@@ -32,10 +32,35 @@ namespace TopTastic.ViewModel
             this.item = item;
         }
 
+        public string Weeks
+        {
+            get
+            {
+                switch (item.Weeks)
+                {
+                    case 0:
+                        return string.Empty;
+                    case 1:
+                        return string.Format("1 WEEK IN THE CHART", item.Weeks.ToString());
+                    default:
+                        return string.Format("{0} WEEKS IN THE CHART", item.Weeks.ToString());
+
+                }
+            }
+        }
+
+        public string ArtistAndTitle
+        {
+            get
+            {
+                return string.Format("{0} - {1}", item.Title, item.Artist);
+            }
+        }
+
         public string Position { get { return item.Position.ToString(); }}
         public string Status { get { return item.Status.ToUpper(); } }
         public string Previous { get { return item.Previous.ToString(); } }
-        public string Weeks { get { return item.Weeks.ToString(); } }
+       
         public string Artist { get { return item.Artist; } }
         public string Title { get { return item.Title; } }
         public string Thumbnail

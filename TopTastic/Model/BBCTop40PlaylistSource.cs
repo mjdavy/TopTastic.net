@@ -47,7 +47,7 @@ namespace TopTastic.Model
             playlistData.Title = string.Format("UK Top 40 {0:D} ", ExtractDate(html));
             playlistData.SearchKeys = new List<string>();
 
-            var regexChartItem = new Regex(@"<td>(?<Position>.*?)</td>.*?<td>(?<Status>.*?)</td>.*?<td>(?<Previous>.*?)</td>.*?<td>(?<Weeks>.*?).*?<td>(?<Artist>.*?)</td>.*?<td>(?<Title>.*?)</td>", RegexOptions.Singleline);
+            var regexChartItem = new Regex(@"<td>(?<Position>.*?)</td>.*?<td>(?<Status>.*?)</td>.*?<td>(?<Previous>.*?)</td>.*?<td>(?<Weeks>.*?)</td>.*?<td>(?<Artist>.*?)</td>.*?<td>(?<Title>.*?)</td>", RegexOptions.Singleline);
             var matches = regexChartItem.Matches(html);
 
             foreach (Match m in matches)
