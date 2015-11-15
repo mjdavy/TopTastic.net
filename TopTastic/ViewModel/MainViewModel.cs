@@ -18,6 +18,7 @@ namespace TopTastic.ViewModel
         private IDataService _service;
         private Uri _playerUri;
         private IPlaylistData _playlistData;
+        private string _artistInfo;
 
         public RelayCommand CreateYoutubePlaylistCommand
         {
@@ -48,6 +49,7 @@ namespace TopTastic.ViewModel
             {
                 Set(() => SelectedItem, ref _selectedItem, value);
                 PlayVideo(_service, value.VideoId);
+                UpdateArtistInfo(_service, value.Artist);
             }
         }
 
@@ -60,6 +62,18 @@ namespace TopTastic.ViewModel
             set
             {
                 Set(() => PlayerUri, ref _playerUri, value);
+            }
+        }
+
+        public string ArtistInfo
+        {
+            get
+            {
+                return _artistInfo;
+            }
+            set
+            {
+                Set(() => ArtistInfo, ref _artistInfo, value);
             }
         }
 
@@ -122,6 +136,23 @@ namespace TopTastic.ViewModel
                     /// if there is an error should create a property and bind to it for better practices
                     System.Diagnostics.Debug.WriteLine(err.ToString());
                 }
+            });
+        }
+
+        void UpdateArtistInfo(IDataService service, string artistQuery)
+        {
+            service.GetArtistInfo(artistQuery, (artistInfo, err) =>
+            {
+                if (err == null)
+                {
+                    this.ArtistInfo = artistInfo;
+                }
+                else
+                {
+                    /// if there is an error should create a property and bind to it for better practices
+                    System.Diagnostics.Debug.WriteLine(err.ToString());
+                }
+
             });
         }
 

@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using MyToolkit.Multimedia;
 using Windows.Storage;
+using EchoNest;
 
 namespace TopTastic.Model
 {
@@ -14,6 +15,25 @@ namespace TopTastic.Model
         public void CreatePlaylist(IPlaylistData playlistData, Action<string, Exception> callback)
         {
             throw new NotImplementedException();
+        }
+
+        public async void GetArtistInfo(string artistQuery, Action<string, Exception> callback)
+        {
+
+            Exception ex = null;
+            string artistInfo = null;
+
+            try
+            {
+                var c1 = new Mock();
+                artistInfo = await c1.Test();
+            }
+            catch (Exception e)
+            {
+                ex = e;
+            }
+
+            callback(artistInfo, ex);
         }
 
         public async void GetPlaylistData(Action<BBCTop40PlaylistData, Exception> callback)

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using MyToolkit.Multimedia;
+using EchoNest;
 
 namespace TopTastic.Model
 {
@@ -27,6 +28,26 @@ namespace TopTastic.Model
 
             callback(playlistId, ex);
         }
+
+        public async void GetArtistInfo(string artistQuery, Action<string, Exception> callback)
+        {
+            
+            Exception ex = null;
+            string artistInfo = null;
+
+            try
+            {
+                var c1 = new Mock();
+                artistInfo = await c1.Test();
+            }
+            catch (Exception e)
+            {
+                ex = e;
+            }
+
+            callback(artistInfo, ex);
+        }
+
 
         public async void GetPlaylistData(Action<BBCTop40PlaylistData, Exception> callback)
         {
@@ -98,5 +119,6 @@ namespace TopTastic.Model
 
             callback(youTubeUri, ex);
         }
+
     }
 }

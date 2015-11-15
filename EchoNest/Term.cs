@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Globalization;
+using System.Net;
 
 namespace EchoNest
 {
@@ -139,7 +140,8 @@ namespace EchoNest
                 term = term + "^" + _boost.Value.ToString(CultureInfo.InvariantCulture);
             }
 
-            return HttpUtility.HtmlEncode(term);
+          
+            return WebUtility.HtmlEncode(term);
         }
 
         #endregion Methods

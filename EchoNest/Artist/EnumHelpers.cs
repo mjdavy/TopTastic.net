@@ -9,10 +9,10 @@ namespace EchoNest.Artist
         internal static string GetDescription(Enum value)
         {
             FieldInfo fi = value.GetType().GetField(value.ToString());
-            DescriptionAttribute[] attributes = (DescriptionAttribute[])fi.GetCustomAttributes(typeof(DescriptionAttribute), false);
+            Description[] attributes = (Description[])fi.GetCustomAttributes(typeof(Description), false);
             if (attributes.Length > 0)
             {
-                return attributes[0].Description;
+                return attributes[0].Text;
             }
 
             return value.ToString();

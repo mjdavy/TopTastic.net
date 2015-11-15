@@ -11,6 +11,7 @@ namespace TopTastic.Model
     {
         void GetPlaylistData(Action<BBCTop40PlaylistData, Exception> callback);
         void GetVideoInfo(IPlaylistData playlistData, Action<IList<VideoInfo>, Exception> callback);
+        void GetArtistInfo(string artistQuery, Action<string, Exception> callback);
         void GetYoutubeVideoUri(string videoId, Action<YouTubeUri, Exception> callback);
         void CreatePlaylist(IPlaylistData playlistData, Action<string, Exception> callback);
     }

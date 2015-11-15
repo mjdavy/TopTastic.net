@@ -181,6 +181,7 @@
     <Compile Include="Artist\VideoItem.cs" />
     <Compile Include="Artist\VideoResponse.cs" />
     <Compile Include="Artist\YearsActive.cs" />
+    <Compile Include="Artist\Description.cs" />
     <Compile Include="EchoNestService.cs" />
     <Compile Include="EchoNestSession.cs" />
     <Compile Include="IdSpace.cs" />

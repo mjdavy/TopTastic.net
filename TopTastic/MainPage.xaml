@@ -54,14 +54,15 @@
         <Border Grid.Row="1" Grid.Column="1" Margin="0" BorderThickness="0" Background="Black">
             <StackPanel HorizontalAlignment="Right" Orientation="Vertical" VerticalAlignment="Top">
                 <TextBlock Text="{Binding SelectedItem.ArtistAndTitle, Mode=OneWay}" HorizontalAlignment="Center" VerticalAlignment="Top" Style="{StaticResource TitleTextBlockStyle}" Foreground="White" MaxLines="1"/>
-                <MediaElement x:Name="player" 
+                <MediaElement x:Name="player"  MediaEnded="player_MediaEnded" MediaFailed="player_MediaFailed" MediaOpened="player_MediaOpened"
             		AreTransportControlsEnabled="True"
-            		Source="{Binding PlayerUri}" 
+            		Source="{Binding ArtistInfo}" 
             		Margin="10" d:LayoutOverrides="LeftPosition, RightPosition">
                     <MediaElement.TransportControls>
                         <MediaTransportControls IsCompact="True" Background="#FF7D7D7D"/>
                     </MediaElement.TransportControls>
                 </MediaElement>
+                <TextBlock Text="{Binding ArtistInfo}" HorizontalAlignment="Left" VerticalAlignment="Top"/>
             </StackPanel>
         </Border>
     </Grid>

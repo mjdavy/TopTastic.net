@@ -26,5 +26,20 @@ namespace TopTastic
         {
             this.InitializeComponent();
         }
+
+        private void player_MediaEnded(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void player_MediaFailed(object sender, ExceptionRoutedEventArgs e)
+        {
+
+        }
+
+        private void player_MediaOpened(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
