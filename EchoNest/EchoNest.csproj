@@ -1,0 +1,209 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{2DFF6A10-4CDF-4470-B037-CB058937919A}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>EchoNest</RootNamespace>
+    <AssemblyName>EchoNest</AssemblyName>
+    <DefaultLanguage>en-US</DefaultLanguage>
+    <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
+    <TargetPlatformVersion>10.0.10240.0</TargetPlatformVersion>
+    <TargetPlatformMinVersion>10.0.10240.0</TargetPlatformMinVersion>
+    <MinimumVisualStudioVersion>14</MinimumVisualStudioVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{A5A43C5B-DE2A-4C0C-9213-0A381AF9435A};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;NETFX_CORE;WINDOWS_UWP</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE;NETFX_CORE;WINDOWS_UWP</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|ARM'">
+    <PlatformTarget>ARM</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\ARM\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;NETFX_CORE;WINDOWS_UWP</DefineConstants>
+    <NoWarn>;2008</NoWarn>
+    <DebugType>full</DebugType>
+    <PlatformTarget>ARM</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|ARM'">
+    <PlatformTarget>ARM</PlatformTarget>
+    <OutputPath>bin\ARM\Release\</OutputPath>
+    <DefineConstants>TRACE;NETFX_CORE;WINDOWS_UWP</DefineConstants>
+    <Optimize>true</Optimize>
+    <NoWarn>;2008</NoWarn>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>ARM</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <PlatformTarget>x64</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x64\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;NETFX_CORE;WINDOWS_UWP</DefineConstants>
+    <NoWarn>;2008</NoWarn>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <PlatformTarget>x64</PlatformTarget>
+    <OutputPath>bin\x64\Release\</OutputPath>
+    <DefineConstants>TRACE;NETFX_CORE;WINDOWS_UWP</DefineConstants>
+    <Optimize>true</Optimize>
+    <NoWarn>;2008</NoWarn>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;NETFX_CORE;WINDOWS_UWP</DefineConstants>
+    <NoWarn>;2008</NoWarn>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <PlatformTarget>x86</PlatformTarget>
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <DefineConstants>TRACE;NETFX_CORE;WINDOWS_UWP</DefineConstants>
+    <Optimize>true</Optimize>
+    <NoWarn>;2008</NoWarn>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <!-- A reference to the entire .Net Framework and Windows SDK are automatically included -->
+    <None Include="project.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Artist\ArtistBucket.cs" />
+    <Compile Include="Artist\ArtistBucketExtensions.cs" />
+    <Compile Include="Artist\ArtistBucketItem.cs" />
+    <Compile Include="Artist\Biography.cs" />
+    <Compile Include="Artist\BiographyItem.cs" />
+    <Compile Include="Artist\BiographyResponse.cs" />
+    <Compile Include="Artist\Blog.cs" />
+    <Compile Include="Artist\BlogItem.cs" />
+    <Compile Include="Artist\BlogResponse.cs" />
+    <Compile Include="Artist\DocCounts.cs" />
+    <Compile Include="Artist\EnumHelpers.cs" />
+    <Compile Include="Artist\Extract.cs" />
+    <Compile Include="Artist\ExtractArgument.cs" />
+    <Compile Include="Artist\ExtractResponse.cs" />
+    <Compile Include="Artist\Familiarity.cs" />
+    <Compile Include="Artist\FamiliarityItem.cs" />
+    <Compile Include="Artist\FamiliarityResponse.cs" />
+    <Compile Include="Artist\ForeignIdItem.cs" />
+    <Compile Include="Artist\Hotttnesss.cs" />
+    <Compile Include="Artist\HotttnesssItem.cs" />
+    <Compile Include="Artist\HotttnesssResponse.cs" />
+    <Compile Include="Artist\HotttnesssType.cs" />
+    <Compile Include="Artist\Image.cs" />
+    <Compile Include="Artist\ImageItem.cs" />
+    <Compile Include="Artist\ImageResponse.cs" />
+    <Compile Include="Artist\License.cs" />
+    <Compile Include="Artist\ListTerms.cs" />
+    <Compile Include="Artist\ListTermsItem.cs" />
+    <Compile Include="Artist\ListTermsResponse.cs" />
+    <Compile Include="Artist\ListTermsType.cs" />
+    <Compile Include="Artist\News.cs" />
+    <Compile Include="Artist\NewsItem.cs" />
+    <Compile Include="Artist\NewsResponse.cs" />
+    <Compile Include="Artist\Profile.cs" />
+    <Compile Include="Artist\ProfileResponse.cs" />
+    <Compile Include="Artist\RankType.cs" />
+    <Compile Include="Artist\Reviews.cs" />
+    <Compile Include="Artist\ReviewsItem.cs" />
+    <Compile Include="Artist\ReviewsResponse.cs" />
+    <Compile Include="Artist\Search.cs" />
+    <Compile Include="Artist\SearchArgument.cs" />
+    <Compile Include="Artist\SearchResponse.cs" />
+    <Compile Include="Artist\SimilarArtists.cs" />
+    <Compile Include="Artist\SimilarArtistsArgument.cs" />
+    <Compile Include="Artist\SimilarArtistsResponse.cs" />
+    <Compile Include="Artist\Song.cs" />
+    <Compile Include="Artist\SongItem.cs" />
+    <Compile Include="Artist\SongResponse.cs" />
+    <Compile Include="Artist\Sorting.cs" />
+    <Compile Include="Artist\SuggestArtist.cs" />
+    <Compile Include="Artist\SuggestArtistItem.cs" />
+    <Compile Include="Artist\SuggestArtistResponse.cs" />
+    <Compile Include="Artist\Terms.cs" />
+    <Compile Include="Artist\TermsItem.cs" />
+    <Compile Include="Artist\TermsResponse.cs" />
+    <Compile Include="Artist\TermsSort.cs" />
+    <Compile Include="Artist\TopHottt.cs" />
+    <Compile Include="Artist\TopHotttResponse.cs" />
+    <Compile Include="Artist\TopTerms.cs" />
+    <Compile Include="Artist\TopTermsItem.cs" />
+    <Compile Include="Artist\TopTermsResponse.cs" />
+    <Compile Include="Artist\Urls.cs" />
+    <Compile Include="Artist\UrlsItem.cs" />
+    <Compile Include="Artist\UrlsResponse.cs" />
+    <Compile Include="Artist\Video.cs" />
+    <Compile Include="Artist\VideoItem.cs" />
+    <Compile Include="Artist\VideoResponse.cs" />
+    <Compile Include="Artist\YearsActive.cs" />
+    <Compile Include="EchoNestService.cs" />
+    <Compile Include="EchoNestSession.cs" />
+    <Compile Include="IdSpace.cs" />
+    <Compile Include="Mock.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Response.cs" />
+    <Compile Include="ResponseCode.cs" />
+    <Compile Include="ResponseContainer.cs" />
+    <Compile Include="ResponseStatus.cs" />
+    <Compile Include="Term.cs" />
+    <Compile Include="TermList.cs" />
+    <Compile Include="UriQuery.cs" />
+    <Content Include="Properties\EchoNest.rd.xml" />
+  </ItemGroup>
+  <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
+    <VisualStudioVersion>14.0</VisualStudioVersion>
+  </PropertyGroup>
+  <Import Project="$(MSBuildExtensionsPath)\Microsoft\WindowsXaml\v$(VisualStudioVersion)\Microsoft.Windows.UI.Xaml.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
