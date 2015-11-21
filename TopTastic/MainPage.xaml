@@ -49,7 +49,7 @@
             <ColumnDefinition Width="4*"/>
             <ColumnDefinition Width="6*"/>
         </Grid.ColumnDefinitions>
-        <!--<Button Command="{Binding CreateYoutubePlaylistCommand}" Margin="16,0,0,0">Create Youtube Playlist</Button>-->
+        <Button Command="{Binding CreateYoutubePlaylistCommand}" Margin="16,0,0,0">Create Youtube Playlist</Button>
         <ListView Grid.Row="1" x:Name="listView" HorizontalAlignment="Left" ItemTemplate="{StaticResource BBCTop40PlaylistDataItemTemplate}" ItemsSource="{Binding PlaylistItems}" SelectedItem="{Binding SelectedItem, Mode=TwoWay}" Margin="10,10,0,0" VerticalAlignment="Top"/>
         <Border Grid.Row="1" Grid.Column="1" Margin="0" BorderThickness="0" Background="Black">
             <StackPanel HorizontalAlignment="Right" Orientation="Vertical" VerticalAlignment="Top">
