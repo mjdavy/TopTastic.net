@@ -26,7 +26,7 @@ namespace TopTastic.Model
             try
             {
                 var c1 = new Mock();
-                artistInfo = await c1.Test();
+                artistInfo =  c1.Test();
             }
             catch (Exception e)
             {

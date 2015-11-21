@@ -29,7 +29,7 @@ namespace TopTastic.Model
             callback(playlistId, ex);
         }
 
-        public async void GetArtistInfo(string artistQuery, Action<string, Exception> callback)
+        public void GetArtistInfo(string artistQuery, Action<string, Exception> callback)
         {
             
             Exception ex = null;
@@ -38,7 +38,7 @@ namespace TopTastic.Model
             try
             {
                 var c1 = new Mock();
-                artistInfo = await c1.Test();
+                artistInfo =  c1.Test();
             }
             catch (Exception e)
             {

@@ -52,18 +52,25 @@
         <Button Command="{Binding CreateYoutubePlaylistCommand}" Margin="16,0,0,0">Create Youtube Playlist</Button>
         <ListView Grid.Row="1" x:Name="listView" HorizontalAlignment="Left" ItemTemplate="{StaticResource BBCTop40PlaylistDataItemTemplate}" ItemsSource="{Binding PlaylistItems}" SelectedItem="{Binding SelectedItem, Mode=TwoWay}" Margin="10,10,0,0" VerticalAlignment="Top"/>
         <Border Grid.Row="1" Grid.Column="1" Margin="0" BorderThickness="0" Background="Black">
-            <StackPanel HorizontalAlignment="Right" Orientation="Vertical" VerticalAlignment="Top">
-                <TextBlock Text="{Binding SelectedItem.ArtistAndTitle, Mode=OneWay}" HorizontalAlignment="Center" VerticalAlignment="Top" Style="{StaticResource TitleTextBlockStyle}" Foreground="White" MaxLines="1"/>
+            <Grid HorizontalAlignment="Right" VerticalAlignment="Top">
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition Height="6*"/>
+                    <RowDefinition Height="3*"/>
+                </Grid.RowDefinitions>
+                <TextBlock Text="{Binding SelectedItem.ArtistAndTitle, Mode=OneWay}" HorizontalAlignment="Center" VerticalAlignment="Top" Style="{StaticResource TitleTextBlockStyle}" Foreground="White" MaxLines="1" Margin="11,0,10,0"/>
                 <MediaElement x:Name="player"  MediaEnded="player_MediaEnded" MediaFailed="player_MediaFailed" MediaOpened="player_MediaOpened"
-            		AreTransportControlsEnabled="True"
-            		Source="{Binding ArtistInfo}" 
-            		Margin="10" d:LayoutOverrides="LeftPosition, RightPosition">
+        			AreTransportControlsEnabled="True"
+        			Source="{Binding ArtistInfo}" 
+        			Margin="10,0,10,-11" d:LayoutOverrides="LeftMargin, RightMargin, LeftPosition, RightPosition" VerticalAlignment="Bottom" Grid.Row="1">
                     <MediaElement.TransportControls>
                         <MediaTransportControls IsCompact="True" Background="#FF7D7D7D"/>
                     </MediaElement.TransportControls>
                 </MediaElement>
-                <TextBlock Text="{Binding ArtistInfo}" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-            </StackPanel>
+                <ScrollViewer HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,53,0,-45" Grid.Row="2" >
+                    <TextBlock Text="{Binding ArtistInfo}" Foreground="White" Height="20" Width="0"/>
+                </ScrollViewer>
+            </Grid>
         </Border>
     </Grid>
 

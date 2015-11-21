@@ -3,6 +3,9 @@ using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
 using EchoNest;
 using Windows.Storage;
 using EchoNest.Artist;
+using Windows.Data.Xml.Dom;
+using System.Threading.Tasks;
+using System.IO;
 
 namespace TopTastic.tests
 {
@@ -14,12 +17,29 @@ namespace TopTastic.tests
         [TestInitialize]
         public void Init()
         {
-            var echoNestApiKey = "UTXDWPYJJJ8BBB8OH";
+            InitAsync().Wait();
+        }
 
-            ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
-            localSettings.Values["EchoNestApiKey"] = echoNestApiKey;
+        public async Task InitAsync()
+        {
+            try
+            {
+                string echoNestApiKey = await LoadApiKey();
+                session = new EchoNestSession(echoNestApiKey);
+            }
+            catch(Exception ex)
+            {
 
-            session = new EchoNestSession(echoNestApiKey);
+            }
+        }
+
+        public async Task<string> LoadApiKey()
+        {
+            var secrets = new Uri("ms-appx:///Assets/echonest_secrets.xml");
+            StorageFile sFile = await StorageFile.GetFileFromApplicationUriAsync(secrets);
+            XmlDocument doc =  await XmlDocument.LoadFromFileAsync(sFile);
+            var nodes = doc.GetElementsByTagName("EchnoNestApiKey");
+            return nodes[0].InnerText;
         }
 
         [TestMethod]
