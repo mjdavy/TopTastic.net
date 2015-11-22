@@ -6,11 +6,17 @@ using System.Text;
 using System.Threading.Tasks;
 using MyToolkit.Multimedia;
 using EchoNest;
+using Windows.Storage;
+using Windows.Data.Xml.Dom;
+using EchoNest.Artist;
 
 namespace TopTastic.Model
 {
     public class DataService : IDataService
     {
+        private EchoNestSession echoNestSession;
+
+
         public async void CreatePlaylist(IPlaylistData playlistData, Action<string, Exception> callback)
         {
             string playlistId = null;
@@ -29,16 +35,35 @@ namespace TopTastic.Model
             callback(playlistId, ex);
         }
 
-        public void GetArtistInfo(string artistQuery, Action<string, Exception> callback)
+        public string FormatArtistQuery(string artist)
         {
-            
+            var artistQuery = artist.Replace("&", ",");
+            return artistQuery;
+        }
+
+        public async void GetArtistInfo(string artist, Action<string, Exception> callback)
+        {
             Exception ex = null;
             string artistInfo = null;
 
             try
             {
-                var c1 = new Mock();
-                artistInfo =  c1.Test();
+                if (this.echoNestSession == null)
+                {
+                    var echoNestApiKey = await this.LoadApiKey();
+                    this.echoNestSession = new EchoNestSession(echoNestApiKey);
+                }
+
+                var artistQuery = FormatArtistQuery(artist);
+                var result = this.echoNestSession.Query<Biography>().Execute(artistQuery);
+
+                StringBuilder sb = new StringBuilder();
+                foreach(var bio in result.Biographies)
+                {
+                    sb.Append(bio.Text);
+                }
+
+                artistInfo = sb.ToString();
             }
             catch (Exception e)
             {
@@ -118,6 +143,15 @@ namespace TopTastic.Model
             }
 
             callback(youTubeUri, ex);
+        }
+
+        public async Task<string> LoadApiKey()
+        {
+            var secrets = new Uri("ms-appx:///Assets/echonest_secrets.xml");
+            StorageFile sFile = await StorageFile.GetFileFromApplicationUriAsync(secrets);
+            XmlDocument doc = await XmlDocument.LoadFromFileAsync(sFile);
+            var nodes = doc.GetElementsByTagName("EchnoNestApiKey");
+            return nodes[0].InnerText;
         }
 
     }

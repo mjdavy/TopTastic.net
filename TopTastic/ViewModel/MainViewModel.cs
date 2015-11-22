@@ -141,6 +141,7 @@ namespace TopTastic.ViewModel
 
         void UpdateArtistInfo(IDataService service, string artistQuery)
         {
+            this.ArtistInfo = string.Empty;
             service.GetArtistInfo(artistQuery, (artistInfo, err) =>
             {
                 if (err == null)

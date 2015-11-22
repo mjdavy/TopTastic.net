@@ -17,7 +17,7 @@ namespace TopTastic.Model
             throw new NotImplementedException();
         }
 
-        public async void GetArtistInfo(string artistQuery, Action<string, Exception> callback)
+        public void GetArtistInfo(string artistQuery, Action<string, Exception> callback)
         {
 
             Exception ex = null;

@@ -41,34 +41,32 @@
 
 
     <Grid Background="#FF323232">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="4*"/>
             <ColumnDefinition Width="6*"/>
         </Grid.ColumnDefinitions>
-        <Button Command="{Binding CreateYoutubePlaylistCommand}" Margin="16,0,0,0">Create Youtube Playlist</Button>
-        <ListView Grid.Row="1" x:Name="listView" HorizontalAlignment="Left" ItemTemplate="{StaticResource BBCTop40PlaylistDataItemTemplate}" ItemsSource="{Binding PlaylistItems}" SelectedItem="{Binding SelectedItem, Mode=TwoWay}" Margin="10,10,0,0" VerticalAlignment="Top"/>
-        <Border Grid.Row="1" Grid.Column="1" Margin="0" BorderThickness="0" Background="Black">
-            <Grid HorizontalAlignment="Right" VerticalAlignment="Top">
+        <!--<Button Command="{Binding CreateYoutubePlaylistCommand}" Margin="16,0,0,0">Create Youtube Playlist</Button>-->
+        <ListView x:Name="listView" ItemTemplate="{StaticResource BBCTop40PlaylistDataItemTemplate}" ItemsSource="{Binding PlaylistItems}" SelectedItem="{Binding SelectedItem, Mode=TwoWay}" Margin="10,10,0,0" />
+        <Border Grid.Column="1" Margin="0" BorderThickness="0" Background="#FF5A5A5A">
+            <Grid>
                 <Grid.RowDefinitions>
-                    <RowDefinition/>
-                    <RowDefinition Height="6*"/>
-                    <RowDefinition Height="3*"/>
+                    <RowDefinition Height="5*"/>
+                    <RowDefinition Height="60*"/>
+                    <RowDefinition Height="35*"/>
                 </Grid.RowDefinitions>
-                <TextBlock Text="{Binding SelectedItem.ArtistAndTitle, Mode=OneWay}" HorizontalAlignment="Center" VerticalAlignment="Top" Style="{StaticResource TitleTextBlockStyle}" Foreground="White" MaxLines="1" Margin="11,0,10,0"/>
-                <MediaElement x:Name="player"  MediaEnded="player_MediaEnded" MediaFailed="player_MediaFailed" MediaOpened="player_MediaOpened"
-        			AreTransportControlsEnabled="True"
-        			Source="{Binding ArtistInfo}" 
-        			Margin="10,0,10,-11" d:LayoutOverrides="LeftMargin, RightMargin, LeftPosition, RightPosition" VerticalAlignment="Bottom" Grid.Row="1">
-                    <MediaElement.TransportControls>
-                        <MediaTransportControls IsCompact="True" Background="#FF7D7D7D"/>
-                    </MediaElement.TransportControls>
-                </MediaElement>
-                <ScrollViewer HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,53,0,-45" Grid.Row="2" >
-                    <TextBlock Text="{Binding ArtistInfo}" Foreground="White" Height="20" Width="0"/>
+                <TextBlock Text="{Binding SelectedItem.ArtistAndTitle, Mode=OneWay}" Style="{StaticResource TitleTextBlockStyle}" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                <Border Grid.Row="1" Background="Black" Margin="10">
+                    <MediaElement x:Name="player"  MediaEnded="player_MediaEnded" MediaFailed="player_MediaFailed" MediaOpened="player_MediaOpened"
+                		AreTransportControlsEnabled="True"
+                		Source="{Binding SelectedItem}" 
+        			HorizontalAlignment="Left" VerticalAlignment="Top">
+                        <MediaElement.TransportControls>
+                            <MediaTransportControls IsCompact="True" Background="#FF7D7D7D"/>
+                        </MediaElement.TransportControls>
+                    </MediaElement>
+                </Border>
+                <ScrollViewer Grid.Row="2" Margin="10,0" >
+                    <TextBlock Text="{Binding ArtistInfo}" Foreground="White" TextWrapping="Wrap" Margin="0,0,10,0" />
                 </ScrollViewer>
             </Grid>
         </Border>

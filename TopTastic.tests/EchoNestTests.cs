@@ -21,16 +21,9 @@ namespace TopTastic.tests
         }
 
         public async Task InitAsync()
-        {
-            try
-            {
-                string echoNestApiKey = await LoadApiKey();
-                session = new EchoNestSession(echoNestApiKey);
-            }
-            catch(Exception ex)
-            {
-
-            }
+        { 
+            string echoNestApiKey = await LoadApiKey();
+            session = new EchoNestSession(echoNestApiKey);
         }
 
         public async Task<string> LoadApiKey()
