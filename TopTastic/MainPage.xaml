@@ -56,14 +56,7 @@
                 </Grid.RowDefinitions>
                 <TextBlock Text="{Binding SelectedItem.ArtistAndTitle, Mode=OneWay}" Style="{StaticResource TitleTextBlockStyle}" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                 <Border Grid.Row="1" Background="Black" Margin="10">
-                    <MediaElement x:Name="player"  MediaEnded="player_MediaEnded" MediaFailed="player_MediaFailed" MediaOpened="player_MediaOpened"
-                		AreTransportControlsEnabled="True"
-                		Source="{Binding SelectedItem}" 
-        			HorizontalAlignment="Left" VerticalAlignment="Top">
-                        <MediaElement.TransportControls>
-                            <MediaTransportControls IsCompact="True" Background="#FF7D7D7D"/>
-                        </MediaElement.TransportControls>
-                    </MediaElement>
+                    <WebView Source="{Binding YouTubePlayerSource}"></WebView>
                 </Border>
                 <ScrollViewer Grid.Row="2" Margin="10,0" >
                     <TextBlock Text="{Binding ArtistInfo}" Foreground="White" TextWrapping="Wrap" Margin="0,0,10,0" />
