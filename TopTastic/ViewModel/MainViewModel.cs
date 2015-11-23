@@ -4,12 +4,10 @@ using Microsoft.Practices.ServiceLocation;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TopTastic.Model;
-using Windows.Storage;
 
 namespace TopTastic.ViewModel
 {
@@ -21,7 +19,6 @@ namespace TopTastic.ViewModel
         private Uri _playerUri;
         private IPlaylistData _playlistData;
         private string _artistInfo;
-        private string _ytHtml;
 
         public RelayCommand CreateYoutubePlaylistCommand
         {
@@ -39,14 +36,6 @@ namespace TopTastic.ViewModel
             {
                 Set(() => PlaylistItems, ref _playlistItems, value);
                 CreateYoutubePlaylistCommand.RaiseCanExecuteChanged();
-            }
-        }
-        
-        public Uri YouTubePlayerSource
-        {
-            get
-            {
-                return new Uri("ms-appx-web:///Assets/YTPlayer.html");
             }
         }
 
@@ -206,18 +195,5 @@ namespace TopTastic.ViewModel
         {
             return this.PlaylistItems != null && this.PlaylistItems.Count > 0;
         }
-
-        //public async Task<string> LoadYTPlayerHtml()
-        //{
-        //    //var uri = new Uri("ms-appx:///Assets/YTPlayer.html");
-        //    //StorageFile sFile = await StorageFile.GetFileFromApplicationUriAsync(uri);
-        //    //using (Stream s = await sFile.OpenStreamForReadAsync())
-        //    //{
-
-        //    //}
-        //    //    var nodes = doc.GetElementsByTagName("EchnoNestApiKey");
-        //    //return nodes[0].InnerText;
-        //}
-
     }
 }
