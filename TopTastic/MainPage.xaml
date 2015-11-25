@@ -58,7 +58,7 @@
                 <Border Grid.Row="1" Background="Black" Margin="10">
                     <MediaElement x:Name="player"  MediaEnded="player_MediaEnded" MediaFailed="player_MediaFailed" MediaOpened="player_MediaOpened"
                 		AreTransportControlsEnabled="True"
-                		Source="{Binding SelectedItem}" 
+                		Source="{Binding PlayerUri}" 
         			HorizontalAlignment="Left" VerticalAlignment="Top">
                         <MediaElement.TransportControls>
                             <MediaTransportControls IsCompact="True" Background="#FF7D7D7D"/>
