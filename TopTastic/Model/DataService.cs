@@ -9,12 +9,15 @@ using EchoNest;
 using Windows.Storage;
 using Windows.Data.Xml.Dom;
 using EchoNest.Artist;
+using System.Net.Http;
+using System.IO;
 
 namespace TopTastic.Model
 {
     public class DataService : IDataService
     {
         private EchoNestSession echoNestSession;
+        private HttpClient client;
 
 
         public async void CreatePlaylist(IPlaylistData playlistData, Action<string, Exception> callback)
@@ -33,6 +36,37 @@ namespace TopTastic.Model
             }
 
             callback(playlistId, ex);
+        }
+
+        public async void DownloadMedia(Uri videoUri, Action<string, Exception> callback, bool extractAudio = false)
+        {
+            string status = null;
+            Exception ex = null;
+
+            try
+            {
+                if (this.client == null)
+                {
+                    this.client = new HttpClient();
+                    this.client.DefaultRequestHeaders.Add("user-agent", "Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.2; WOW64; Trident/6.0)");
+                }
+
+                var videoStream = await this.client.GetStreamAsync(videoUri);
+
+                StorageFolder localFolder = ApplicationData.Current.LocalFolder;
+                StorageFile videoFile = await localFolder.CreateFileAsync("video.mp4", CreationCollisionOption.ReplaceExisting);
+                using (var videoOutputStream = await videoFile.OpenStreamForWriteAsync())
+                {
+                    await videoStream.CopyToAsync(videoOutputStream);
+                    status = "Video Downloaded";
+                }
+            }
+            catch (Exception e)
+            {
+                ex = e;
+            }
+
+            callback(status, ex);
         }
 
         public string FormatArtistQuery(string artist)

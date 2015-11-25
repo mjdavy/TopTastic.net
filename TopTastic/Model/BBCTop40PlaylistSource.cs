@@ -5,7 +5,6 @@ using System.Net.Http;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Windows.Data.Html;
-using Windows.Web;
 
 
 namespace TopTastic.Model

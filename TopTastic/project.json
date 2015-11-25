@@ -6,7 +6,7 @@
     "Microsoft.ApplicationInsights.WindowsApps": "1.0.0",
     "Microsoft.NETCore.UniversalWindowsPlatform": "5.0.0",
     "MvvmLight": "5.2.0",
-    "MyToolkit.Extended": "2.5.4"
+    "MyToolkit.Extended": "2.5.7"
   },
   "frameworks": {
     "uap10.0": {}

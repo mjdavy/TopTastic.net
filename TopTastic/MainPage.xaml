@@ -34,6 +34,16 @@
             </Grid>
         </DataTemplate>
     </Page.Resources>
+    <Page.BottomAppBar>
+        <CommandBar>
+            <CommandBar.Content>
+                <Grid/>
+            </CommandBar.Content>
+            <AppBarButton Icon="ReShare" Label="Create YouTube Playlist" Command="{Binding CreateYoutubePlaylistCommand}"/>
+            <AppBarButton Icon="Video" Label="Download Video" Command="{Binding DownloadVideoCommand}"/>
+            <AppBarButton Icon="Audio" Label="Download Audio" Command="{Binding DownloadAudioCommand}"/>
+        </CommandBar>
+    </Page.BottomAppBar>
 
     <Page.DataContext>
         <Binding Path="Main" Source="{StaticResource Locator}"/>
@@ -45,7 +55,6 @@
             <ColumnDefinition Width="4*"/>
             <ColumnDefinition Width="6*"/>
         </Grid.ColumnDefinitions>
-        <!--<Button Command="{Binding CreateYoutubePlaylistCommand}" Margin="16,0,0,0">Create Youtube Playlist</Button>-->
         <ListView x:Name="listView" ItemTemplate="{StaticResource BBCTop40PlaylistDataItemTemplate}" ItemsSource="{Binding PlaylistItems}" SelectedItem="{Binding SelectedItem, Mode=TwoWay}" Margin="10,10,0,0" />
         <Border Grid.Column="1" Margin="0" BorderThickness="0" Background="#FF5A5A5A">
             <Grid>

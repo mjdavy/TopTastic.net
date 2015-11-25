@@ -19,12 +19,89 @@ namespace TopTastic.ViewModel
         private Uri _playerUri;
         private IPlaylistData _playlistData;
         private string _artistInfo;
-
+ 
+        #region Commands
         public RelayCommand CreateYoutubePlaylistCommand
         {
             get;
             private set;
         }
+
+        public RelayCommand DownloadVideoCommand
+        {
+            get;
+            private set;
+        }
+
+        public RelayCommand DownloadAudioCommand
+        {
+            get;
+            private set;
+        }
+
+        void CreatCommands()
+        {
+            this.CreateYoutubePlaylistCommand = new RelayCommand(CreatePlaylist, CanCreatePlaylist);
+            this.DownloadVideoCommand = new RelayCommand(DownloadVideo, CanDownloadVideo);
+            this.DownloadAudioCommand = new RelayCommand(DownloadAudio, CanDownloadAudio);
+        }
+
+        void CreatePlaylist()
+        {
+            _service.CreatePlaylist(_playlistData, (playlistid, err) =>
+            {
+                if (err == null)
+                {
+                    // MJDTODO
+                    System.Diagnostics.Debug.WriteLine(playlistid);
+                }
+                else
+                {
+                    /// if there is an error should create a property and bind to it for better practices
+                    System.Diagnostics.Debug.WriteLine(err.ToString());
+                }
+            });
+        }
+
+        void DownloadVideo()
+        {
+            _service.DownloadMedia(this.PlayerUri, (status, err) =>
+            {
+                if (err == null)
+                {
+                    // MJDTODO
+                    System.Diagnostics.Debug.WriteLine(status);
+                }
+                else
+                {
+                    /// if there is an error should create a property and bind to it for better practices
+                    System.Diagnostics.Debug.WriteLine(err.ToString());
+                }
+            });
+        }
+
+        void DownloadAudio()
+        {
+            // MJDTODO
+        }
+
+
+        bool CanCreatePlaylist()
+        {
+            return this.PlaylistItems != null && this.PlaylistItems.Count > 0;
+        }
+
+        bool CanDownloadAudio()
+        {
+            return this.CanDownloadVideo();
+        }
+
+        bool CanDownloadVideo()
+        {
+            return this.PlayerUri != null;
+        }
+
+        #endregion
 
         public ObservableCollection<PlaylistItemViewModel> PlaylistItems
         {
@@ -62,6 +139,8 @@ namespace TopTastic.ViewModel
             set
             {
                 Set(() => PlayerUri, ref _playerUri, value);
+                DownloadAudioCommand.RaiseCanExecuteChanged();
+                DownloadVideoCommand.RaiseCanExecuteChanged();
             }
         }
 
@@ -88,8 +167,8 @@ namespace TopTastic.ViewModel
             {
                 _service = new DataService();
             }
-           
-            this.CreateYoutubePlaylistCommand = new RelayCommand(CreatePlaylist, CanCreatePlaylist);
+
+            this.CreatCommands();
             this.InitializePlaylistItems(_service);
 
         }
@@ -159,6 +238,7 @@ namespace TopTastic.ViewModel
 
         void PlayVideo(IDataService service, string videoId)
         {
+            this.PlayerUri = null;
             service.GetYoutubeVideoUri(videoId, (youtubeUri, err) =>
             {
                 if (err == null)
@@ -174,26 +254,5 @@ namespace TopTastic.ViewModel
 
         }
 
-        void CreatePlaylist()
-        {
-            _service.CreatePlaylist(_playlistData, (playlistid, err) =>
-            {
-                if (err == null)
-                {
-                    // MJDTODO
-                    System.Diagnostics.Debug.WriteLine(playlistid);
-                }
-                else
-                {
-                    /// if there is an error should create a property and bind to it for better practices
-                    System.Diagnostics.Debug.WriteLine(err.ToString());
-                }
-            });
-        }
-
-        bool CanCreatePlaylist()
-        {
-            return this.PlaylistItems != null && this.PlaylistItems.Count > 0;
-        }
     }
 }
