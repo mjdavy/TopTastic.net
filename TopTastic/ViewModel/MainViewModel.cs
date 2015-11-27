@@ -65,7 +65,7 @@ namespace TopTastic.ViewModel
 
         void DownloadVideo()
         {
-            _service.DownloadMedia(this.PlayerUri, (status, err) =>
+            _service.DownloadMedia(this.PlayerUri, this.SelectedItem.ArtistAndTitle, (status, err) =>
             {
                 if (err == null)
                 {

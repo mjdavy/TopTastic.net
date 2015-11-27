@@ -17,7 +17,7 @@ namespace TopTastic.Model
             throw new NotImplementedException();
         }
 
-        public void DownloadMedia(Uri videoUri, Action<string, Exception> callback, bool extractAudio = false)
+        public void DownloadMedia(Uri videoUri, string name, Action<string, Exception> callback, bool extractAudio = false)
         {
             throw new NotImplementedException();
         }

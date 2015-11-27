@@ -11,6 +11,7 @@ using Windows.Data.Xml.Dom;
 using EchoNest.Artist;
 using System.Net.Http;
 using System.IO;
+using System.Diagnostics;
 
 namespace TopTastic.Model
 {
@@ -38,7 +39,8 @@ namespace TopTastic.Model
             callback(playlistId, ex);
         }
 
-        public async void DownloadMedia(Uri videoUri, Action<string, Exception> callback, bool extractAudio = false)
+        // MJDTODO - refactor
+        public async void DownloadMedia(Uri videoUri, string name, Action<string, Exception> callback, bool extractAudio = false)
         {
             string status = null;
             Exception ex = null;
@@ -51,15 +53,27 @@ namespace TopTastic.Model
                     this.client.DefaultRequestHeaders.Add("user-agent", "Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.2; WOW64; Trident/6.0)");
                 }
 
-                var videoStream = await this.client.GetStreamAsync(videoUri);
+                var response = await this.client.GetAsync(videoUri);
 
-                StorageFolder localFolder = ApplicationData.Current.LocalFolder;
-                StorageFile videoFile = await localFolder.CreateFileAsync("video.mp4", CreationCollisionOption.ReplaceExisting);
-                using (var videoOutputStream = await videoFile.OpenStreamForWriteAsync())
+                if (response.IsSuccessStatusCode)
                 {
-                    await videoStream.CopyToAsync(videoOutputStream);
-                    status = "Video Downloaded";
+                    var mediaType = response.Content.Headers.ContentType.MediaType;
+                    Debug.Assert(mediaType == "video/mp4");
+
+                    var videoStream = await this.client.GetStreamAsync(videoUri);
+
+                    var videoFile = await this.CreateVideoFile(name);
+                    using (var videoOutputStream = await videoFile.OpenStreamForWriteAsync())
+                    {
+                        await videoStream.CopyToAsync(videoOutputStream);
+                        status = "Media Downloaded";
+                    }
                 }
+                else
+                {
+                    status = "Failed to download media";
+                }
+                
             }
             catch (Exception e)
             {
@@ -67,6 +81,39 @@ namespace TopTastic.Model
             }
 
             callback(status, ex);
+        }
+
+        public void ExtractAudio()
+        {
+
+        }
+
+        public async Task<StorageFile> CreateAudioFile(string name)
+        {
+            var musicFileName = this.SanitizeFileName(name) + ".mp3";
+            var myMusic = await Windows.Storage.StorageLibrary.GetLibraryAsync(KnownLibraryId.Music);
+            StorageFolder saveFolder = myMusic.SaveFolder;
+            StorageFile musicFile = await saveFolder.CreateFileAsync(musicFileName, CreationCollisionOption.ReplaceExisting);
+            return musicFile;
+        }
+
+        public async Task<StorageFile> CreateVideoFile(string name)
+        {
+            var videoFileName = this.SanitizeFileName(name) + ".mp4";
+            var myVideos = await Windows.Storage.StorageLibrary.GetLibraryAsync(KnownLibraryId.Videos);
+            StorageFolder saveFolder = myVideos.SaveFolder;
+            StorageFile videoFile = await saveFolder.CreateFileAsync(videoFileName, CreationCollisionOption.ReplaceExisting);
+            return videoFile;
+        }
+
+        public string SanitizeFileName(string fileName)
+        {
+            string result = fileName;
+            foreach(var c in Path.GetInvalidFileNameChars())
+            {
+                result = result.Replace(c, '_');
+            }
+            return result;
         }
 
         public string FormatArtistQuery(string artist)
@@ -187,6 +234,5 @@ namespace TopTastic.Model
             var nodes = doc.GetElementsByTagName("EchnoNestApiKey");
             return nodes[0].InnerText;
         }
-
     }
 }
