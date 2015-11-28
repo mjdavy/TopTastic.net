@@ -166,6 +166,11 @@
       <Name>EchoNest</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <Reference Include="FFmpegInterop">
+      <HintPath>..\..\..\..\..\Source\Repos\FFmpegInterop\x64\Debug\FFmpegInterop\FFmpegInterop.winmd</HintPath>
+    </Reference>
+  </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>

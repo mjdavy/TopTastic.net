@@ -12,6 +12,8 @@ using EchoNest.Artist;
 using System.Net.Http;
 using System.IO;
 using System.Diagnostics;
+using FFmpegInterop;
+using Windows.Media.Core;
 
 namespace TopTastic.Model
 {
@@ -68,6 +70,11 @@ namespace TopTastic.Model
                         await videoStream.CopyToAsync(videoOutputStream);
                         status = "Media Downloaded";
                     }
+
+                    if (extractAudio)
+                    {
+                        this.ExtractAudio(videoFile);
+                    }
                 }
                 else
                 {
@@ -83,9 +90,12 @@ namespace TopTastic.Model
             callback(status, ex);
         }
 
-        public void ExtractAudio()
+        public async void ExtractAudio(StorageFile videoFile)
         {
-
+            //var readStream = await videoFile.OpenReadAsync();
+            //MediaStreamSource source = MediaStreamSource.
+            ////FFmpegInteropMSS ffmpeg = FFmpegInteropMSS.CreateFFmpegInteropMSSFromStream(readStream, false, false);
+            ////ffmpeg.
         }
 
         public async Task<StorageFile> CreateAudioFile(string name)
