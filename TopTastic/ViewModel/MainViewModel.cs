@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TopTastic.Model;
+using Windows.UI.Xaml;
 
 namespace TopTastic.ViewModel
 {
@@ -19,7 +20,9 @@ namespace TopTastic.ViewModel
         private Uri _playerUri;
         private IPlaylistData _playlistData;
         private string _artistInfo;
- 
+        private Visibility _videoListProgress;
+        private bool _videoLoading;
+
         #region Commands
         public RelayCommand CreateYoutubePlaylistCommand
         {
@@ -63,9 +66,9 @@ namespace TopTastic.ViewModel
             });
         }
 
-        void DownloadVideo()
+        void DownloadMedia(bool extractAudio)
         {
-            _service.DownloadMedia(this.PlayerUri, this.SelectedItem.ArtistAndTitle, (status, err) =>
+            _service.DownloadMedia(this.PlayerUri, this.SelectedItem.ArtistAndTitle, extractAudio, (status, err) =>
             {
                 if (err == null)
                 {
@@ -79,10 +82,14 @@ namespace TopTastic.ViewModel
                 }
             });
         }
+        void DownloadVideo()
+        {
+            DownloadMedia(false);
+        }
 
         void DownloadAudio()
         {
-            // MJDTODO
+            DownloadMedia(true);
         }
 
 
@@ -144,6 +151,31 @@ namespace TopTastic.ViewModel
             }
         }
 
+        public Visibility VideoListProgress
+        {
+            get
+            {
+                return _videoListProgress;
+            }
+            set
+            {
+                Set(() => VideoListProgress, ref _videoListProgress, value);
+            }
+        }
+
+        public bool VideosLoading
+        {
+            get
+            {
+                return _videoLoading;
+            }
+            set
+            {
+                Set(() => VideosLoading, ref _videoLoading, value);
+                this.VideoListProgress = value ? Visibility.Visible : Visibility.Collapsed;
+            }
+        }
+
         public string ArtistInfo
         {
             get
@@ -175,6 +207,7 @@ namespace TopTastic.ViewModel
 
         void InitializePlaylistItems(IDataService service)
         {
+            this.VideosLoading = true;
             service.GetPlaylistData((playlistData, err) =>
             {
                 if (err == null)
@@ -194,6 +227,7 @@ namespace TopTastic.ViewModel
                     /// if there is an error should create a property and bind to it for better practices
                     System.Diagnostics.Debug.WriteLine(err.ToString());
                 }
+                this.VideosLoading = false;
             });
         }
 

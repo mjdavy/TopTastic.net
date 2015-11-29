@@ -56,6 +56,10 @@
             <ColumnDefinition Width="6*"/>
         </Grid.ColumnDefinitions>
         <ListView x:Name="listView" ItemTemplate="{StaticResource BBCTop40PlaylistDataItemTemplate}" ItemsSource="{Binding PlaylistItems}" SelectedItem="{Binding SelectedItem, Mode=TwoWay}" Margin="10,10,0,0" />
+        <StackPanel Orientation="Horizontal" Visibility="{Binding VideoListProgress}" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <ProgressRing x:Name="videoListProgress" IsActive="{Binding VideosLoading}"></ProgressRing>
+            <TextBlock x:Name="videoLoadingStatus" Foreground="White" Margin="4,0,0,0">Loading videos</TextBlock>
+        </StackPanel>
         <Border Grid.Column="1" Margin="0" BorderThickness="0" Background="#FF5A5A5A">
             <Grid>
                 <Grid.RowDefinitions>

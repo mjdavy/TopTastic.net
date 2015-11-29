@@ -12,8 +12,8 @@ using EchoNest.Artist;
 using System.Net.Http;
 using System.IO;
 using System.Diagnostics;
-using FFmpegInterop;
-using Windows.Media.Core;
+using Windows.Media.Transcoding;
+using Windows.Media.MediaProperties;
 
 namespace TopTastic.Model
 {
@@ -21,6 +21,8 @@ namespace TopTastic.Model
     {
         private EchoNestSession echoNestSession;
         private HttpClient client;
+        private MediaTranscoder transcoder;
+        private MediaEncodingProfile encodingProfile;
 
 
         public async void CreatePlaylist(IPlaylistData playlistData, Action<string, Exception> callback)
@@ -42,7 +44,7 @@ namespace TopTastic.Model
         }
 
         // MJDTODO - refactor
-        public async void DownloadMedia(Uri videoUri, string name, Action<string, Exception> callback, bool extractAudio = false)
+        public async void DownloadMedia(Uri videoUri, string name, bool extractAudio, Action<string, Exception> callback)
         {
             string status = null;
             Exception ex = null;
@@ -73,12 +75,14 @@ namespace TopTastic.Model
 
                     if (extractAudio)
                     {
-                        this.ExtractAudio(videoFile);
+                        var audioFile = await this.CreateAudioFile(name);
+                        this.ExtractAudio(videoFile, audioFile);
+                        status = "Audio Extracted";
                     }
                 }
                 else
                 {
-                    status = "Failed to download media";
+                    status = "Media operation failed";
                 }
                 
             }
@@ -90,12 +94,16 @@ namespace TopTastic.Model
             callback(status, ex);
         }
 
-        public async void ExtractAudio(StorageFile videoFile)
+        public async void ExtractAudio(StorageFile videoFile, StorageFile audioFile)
         {
-            //var readStream = await videoFile.OpenReadAsync();
-            //MediaStreamSource source = MediaStreamSource.
-            ////FFmpegInteropMSS ffmpeg = FFmpegInteropMSS.CreateFFmpegInteropMSSFromStream(readStream, false, false);
-            ////ffmpeg.
+            if (this.transcoder == null)
+            {
+                this.transcoder = new MediaTranscoder();
+                this.encodingProfile = MediaEncodingProfile.CreateMp3(AudioEncodingQuality.High);
+            }
+
+            var preparedTranscodeResult = await this.transcoder.PrepareFileTranscodeAsync(videoFile, audioFile, this.encodingProfile);
+            await preparedTranscodeResult.TranscodeAsync();
         }
 
         public async Task<StorageFile> CreateAudioFile(string name)
