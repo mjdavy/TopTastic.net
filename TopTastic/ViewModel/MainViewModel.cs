@@ -22,6 +22,13 @@ namespace TopTastic.ViewModel
         private string _artistInfo;
         private Visibility _videoListProgress;
         private bool _videoLoading;
+        private string _appbarStatusText;
+        private int _appbarStatusValue;
+        private Visibility _appbarStatusVisibility = Visibility.Collapsed;
+        private bool _appbarStatusError;
+        private bool _appbarStatusIndeterminate;
+        private bool _playlistCreationInProgress;
+        private bool _downloadMediaInProgress;
 
         #region Commands
         public RelayCommand CreateYoutubePlaylistCommand
@@ -51,35 +58,52 @@ namespace TopTastic.ViewModel
 
         void CreatePlaylist()
         {
+            this.AppBarStatusVisibilty = Visibility.Visible;
+            this.AppBarStatusText = "Creating YouTube Playlist";
+            this.AppBarStatusIndeterminate = true;
+            this.PlaylistCreationInProgress = true;
             _service.CreatePlaylist(_playlistData, (playlistid, err) =>
             {
                 if (err == null)
                 {
                     // MJDTODO
                     System.Diagnostics.Debug.WriteLine(playlistid);
+                    this.AppBarStatusVisibilty = Visibility.Collapsed;
                 }
                 else
                 {
                     /// if there is an error should create a property and bind to it for better practices
                     System.Diagnostics.Debug.WriteLine(err.ToString());
+                    this.AppBarStatusError = true;
+                    this.AppBarStatusText = "Failed to create YouTube playlist.";
                 }
+                this.PlaylistCreationInProgress = false;
             });
         }
 
         void DownloadMedia(bool extractAudio)
         {
+            this.AppBarStatusVisibilty = Visibility.Visible;
+            this.AppBarStatusText = "Downloading Media";
+            this.AppBarStatusIndeterminate = true;
+            this.DownloadMediaInProgress = true;
+            
             _service.DownloadMedia(this.PlayerUri, this.SelectedItem.ArtistAndTitle, extractAudio, (status, err) =>
             {
                 if (err == null)
                 {
                     // MJDTODO
                     System.Diagnostics.Debug.WriteLine(status);
+                    this.AppBarStatusVisibilty = Visibility.Collapsed;
                 }
                 else
                 {
                     /// if there is an error should create a property and bind to it for better practices
                     System.Diagnostics.Debug.WriteLine(err.ToString());
+                    this.AppBarStatusError = true;
+                    this.AppBarStatusText = "Media download failed.";
                 }
+                this.DownloadMediaInProgress = false;
             });
         }
         void DownloadVideo()
@@ -95,7 +119,7 @@ namespace TopTastic.ViewModel
 
         bool CanCreatePlaylist()
         {
-            return this.PlaylistItems != null && this.PlaylistItems.Count > 0;
+            return this.PlaylistItems != null && this.PlaylistItems.Count > 0 && this.PlaylistCreationInProgress == false;
         }
 
         bool CanDownloadAudio()
@@ -105,9 +129,71 @@ namespace TopTastic.ViewModel
 
         bool CanDownloadVideo()
         {
-            return this.PlayerUri != null;
+            return this.PlayerUri != null && this.DownloadMediaInProgress == false;
         }
 
+        #endregion
+
+        #region AppBar status
+
+        public bool AppBarStatusIndeterminate
+        {
+            get
+            {
+                return _appbarStatusIndeterminate;
+            }
+            set
+            {
+                Set(() => AppBarStatusIndeterminate, ref _appbarStatusIndeterminate, value);
+            }
+        }
+
+        public bool AppBarStatusError
+        {
+            get
+            {
+                return _appbarStatusError;
+            }
+            set
+            {
+                Set(() => AppBarStatusError, ref _appbarStatusError, value);
+            }
+        }
+        public string AppBarStatusText
+        {
+            get
+            {
+                return _appbarStatusText;
+            }
+            set
+            {
+                Set(() => AppBarStatusText, ref _appbarStatusText, value);
+            }
+        }
+
+        public int AppBarStatusValue
+        {
+            get
+            {
+                return _appbarStatusValue;
+            }
+            set
+            {
+                Set(() => AppBarStatusValue, ref _appbarStatusValue, value);
+            }
+        }
+
+        public Visibility AppBarStatusVisibilty
+        {
+            get
+            {
+                return _appbarStatusVisibility;
+            }
+            set
+            {
+                Set(() => AppBarStatusVisibilty, ref _appbarStatusVisibility, value);
+            }
+        }
         #endregion
 
         public ObservableCollection<PlaylistItemViewModel> PlaylistItems
@@ -188,6 +274,32 @@ namespace TopTastic.ViewModel
             }
         }
 
+        public bool PlaylistCreationInProgress
+        {
+            get
+            {
+                return _playlistCreationInProgress;
+            }
+            set
+            {
+                Set(() => PlaylistCreationInProgress, ref _playlistCreationInProgress, value);
+                CreateYoutubePlaylistCommand.RaiseCanExecuteChanged();
+            }
+        }
+
+        public bool DownloadMediaInProgress
+        {
+            get
+            {
+                return _downloadMediaInProgress;
+            }
+            set
+            {
+                Set(() => DownloadMediaInProgress, ref _downloadMediaInProgress, value);
+                DownloadAudioCommand.RaiseCanExecuteChanged();
+                DownloadVideoCommand.RaiseCanExecuteChanged();
+            }
+        }
 
         public MainViewModel()
         {
