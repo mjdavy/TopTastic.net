@@ -17,7 +17,7 @@ namespace TopTastic.Model
             throw new NotImplementedException();
         }
 
-        public void DownloadMedia(Uri videoUri, string name, bool extractAudio, Action < string, Exception> callback)
+        public void DownloadMedia(Uri videoUri, string name, bool extractAudio, Action <string, Exception> callback)
         {
             throw new NotImplementedException();
         }
@@ -30,8 +30,8 @@ namespace TopTastic.Model
 
             try
             {
-                var c1 = new Mock();
-                artistInfo =  c1.Test();
+                var mockEchoNest = new Mock();
+                artistInfo =  mockEchoNest.GetArtistInfo();
             }
             catch (Exception e)
             {

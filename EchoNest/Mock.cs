@@ -8,7 +8,7 @@ namespace EchoNest
 {
     public class Mock
     {
-        public string Test()
+        public string GetArtistInfo()
         {
             
             var sb = new StringBuilder();
