@@ -105,7 +105,7 @@ namespace TopTastic.ViewModel
             {
                 string result;
 
-                if (item.Previous == 0)
+                if (item.Previous == 0 || item.Previous > 40)
                 {
                     result = "ms-appx:///Assets/Star.png";
                 }
