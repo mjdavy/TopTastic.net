@@ -97,6 +97,7 @@
     <SDKReference Include="TestPlatform.Universal, Version=$(UnitTestPlatformVersion)" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DataServiceTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UnitTestApp.xaml.cs">
       <DependentUpon>UnitTestApp.xaml</DependentUpon>
@@ -130,6 +131,10 @@
     <ProjectReference Include="..\EchoNest\EchoNest.csproj">
       <Project>{2dff6a10-4cdf-4470-b037-cb058937919a}</Project>
       <Name>EchoNest</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TopTastic\TopTastic.csproj">
+      <Project>{265bb4ca-a928-457d-b7f8-76b7f493c5bd}</Project>
+      <Name>TopTastic</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
