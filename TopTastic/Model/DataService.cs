@@ -44,7 +44,7 @@ namespace TopTastic.Model
         }
 
         // MJDTODO - refactor
-        public async void DownloadMedia(Uri videoUri, string name, bool extractAudio, Action<string, Exception> callback)
+        public async void DownloadMedia(Uri videoUri, string artist,  string title, bool extractAudio, Action<string, Exception> callback)
         {
             string status = null;
             Exception ex = null;
@@ -66,7 +66,7 @@ namespace TopTastic.Model
 
                     var videoStream = await this.client.GetStreamAsync(videoUri);
 
-                    var videoFile = await this.CreateVideoFile(name);
+                    var videoFile = await this.CreateStorageFile(artist, title, KnownLibraryId.Videos);
                     using (var videoOutputStream = await videoFile.OpenStreamForWriteAsync())
                     {
                         await videoStream.CopyToAsync(videoOutputStream);
@@ -75,8 +75,8 @@ namespace TopTastic.Model
 
                     if (extractAudio)
                     {
-                        var audioFile = await this.CreateAudioFile(name);
-                        this.ExtractAudio(videoFile, audioFile);
+                        var audioFile = await this.CreateStorageFile(artist, title, KnownLibraryId.Music);
+                        this.ExtractAudio(artist, title, videoFile, audioFile);
                         status = "Audio Extracted";
                     }
                 }
@@ -94,7 +94,7 @@ namespace TopTastic.Model
             callback(status, ex);
         }
 
-        public async void ExtractAudio(StorageFile videoFile, StorageFile audioFile)
+        public async void ExtractAudio(string artist, string title, StorageFile videoFile, StorageFile audioFile)
         {
             if (this.transcoder == null)
             {
@@ -104,34 +104,44 @@ namespace TopTastic.Model
 
             var preparedTranscodeResult = await this.transcoder.PrepareFileTranscodeAsync(videoFile, audioFile, this.encodingProfile);
             await preparedTranscodeResult.TranscodeAsync();
+            await TagStorageFile(artist, title, audioFile);
         }
 
-        public async Task<StorageFile> CreateAudioFile(string name)
+        public async Task<StorageFile> CreateStorageFile(string artist, string title, KnownLibraryId libraryId)
         {
-            var musicFileName = this.SanitizeFileName(name) + ".mp3";
-            var myMusic = await Windows.Storage.StorageLibrary.GetLibraryAsync(KnownLibraryId.Music);
-            StorageFolder saveFolder = myMusic.SaveFolder;
-            StorageFile musicFile = await saveFolder.CreateFileAsync(musicFileName, CreationCollisionOption.ReplaceExisting);
-            return musicFile;
+            string fileExtension = string.Empty;
+            if (libraryId == KnownLibraryId.Music)
+            {
+                fileExtension = ".mp3";
+            }
+            else if (libraryId == KnownLibraryId.Videos)
+            {
+                fileExtension = ".mp4";
+            }
+            var fileName = this.CreateFileName(artist, title, fileExtension);
+            var library = await Windows.Storage.StorageLibrary.GetLibraryAsync(libraryId);
+            var saveFolder = library.SaveFolder;
+            var storageFile = await saveFolder.CreateFileAsync(fileName, CreationCollisionOption.ReplaceExisting);
+            return storageFile;
         }
 
-        public async Task<StorageFile> CreateVideoFile(string name)
+        public string CreateFileName(string artist, string title, string extension)
         {
-            var videoFileName = this.SanitizeFileName(name) + ".mp4";
-            var myVideos = await Windows.Storage.StorageLibrary.GetLibraryAsync(KnownLibraryId.Videos);
-            StorageFolder saveFolder = myVideos.SaveFolder;
-            StorageFile videoFile = await saveFolder.CreateFileAsync(videoFileName, CreationCollisionOption.ReplaceExisting);
-            return videoFile;
-        }
-
-        public string SanitizeFileName(string fileName)
-        {
-            string result = fileName;
+            string result = artist + " - " + title + extension;
             foreach(var c in Path.GetInvalidFileNameChars())
             {
-                result = result.Replace(c, '_');
+                result = result.Replace(c.ToString(), string.Empty);
             }
             return result;
+        }
+
+        public async Task TagStorageFile(string artist, string title, StorageFile file)
+        {
+            var id3 = new ID3Library.ID3();
+            await id3.GetMusicPropertiesAsync(file);
+            id3.Artist = artist;
+            id3.Title = title;
+            await id3.SaveMusicPropertiesAsync();
         }
 
         public string FormatArtistQuery(string artist)

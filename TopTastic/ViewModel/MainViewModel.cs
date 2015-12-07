@@ -88,7 +88,7 @@ namespace TopTastic.ViewModel
             this.AppBarStatusIndeterminate = true;
             this.DownloadMediaInProgress = true;
             
-            _service.DownloadMedia(this.PlayerUri, this.SelectedItem.ArtistAndTitle, extractAudio, (status, err) =>
+            _service.DownloadMedia(this.PlayerUri, this.SelectedItem.Artist, this.SelectedItem.Title, extractAudio, (status, err) =>
             {
                 if (err == null)
                 {
