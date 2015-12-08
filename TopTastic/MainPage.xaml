@@ -4,14 +4,15 @@
     xmlns:local="using:TopTastic"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:Interactivity="using:Microsoft.Xaml.Interactivity" xmlns:Core="using:Microsoft.Xaml.Interactions.Core"
+    xmlns:Interactivity="using:Microsoft.Xaml.Interactivity"
+    xmlns:Core="using:Microsoft.Xaml.Interactions.Core"
     x:Class="TopTastic.MainPage"
     mc:Ignorable="d">
     <Page.Resources>
   
     </Page.Resources>
     <Page.BottomAppBar>
-        <CommandBar>
+        <CommandBar x:Name="MainCommandBar">
             <CommandBar.Content>
                 <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10,5,0,0" Width="200" Visibility="{Binding AppBarStatusVisibilty}">
                     <ProgressBar Height="10" Width="100" Margin="0" VerticalAlignment="Stretch" HorizontalAlignment="Left" Value="{Binding AppBarStatusValue}" ShowError="{Binding AppBarStatusError}" IsIndeterminate="{Binding AppBarStatusIndeterminate}"/>
@@ -28,16 +29,46 @@
         <Binding Path="Main" Source="{StaticResource Locator}"/>
     </Page.DataContext>
 
-    <Grid Background="#FF323232">
+    <Grid x:Name="Layout_root" Background="#FF323232">
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup x:Name="AdaptiveStates" CurrentStateChanged="AdaptiveStates_CurrentStateChanged" >
+                <VisualState x:Name="DefaultState">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="720" />
+                    </VisualState.StateTriggers>
+                </VisualState>
+
+                <VisualState x:Name="NarrowState">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="0" />
+                    </VisualState.StateTriggers>
+
+                    <VisualState.Setters>
+                        <Setter Target="MasterColumn.Width" Value="*" />
+                        <Setter Target="DetailColumn.Width" Value="0" />
+                        <Setter Target="MasterListView.SelectionMode" Value="None" />
+                        <Setter Target="MainCommandBar.Visibility" Value="Collapsed" />
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+        
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="4*"/>
-            <ColumnDefinition Width="6*"/>
+            <ColumnDefinition Width="4*" x:Name="MasterColumn"/>
+            <ColumnDefinition Width="6*" x:Name="DetailColumn"/>
         </Grid.ColumnDefinitions>
-        <ListView x:Name="listView" ItemTemplate="{StaticResource BBCTop40PlaylistDataItemTemplate}" ItemsSource="{Binding PlaylistItems}" SelectedItem="{Binding SelectedItem, Mode=TwoWay}" Margin="10,10,0,0" />
+        
+        <ListView x:Name="MasterListView"
+                  ItemTemplate="{StaticResource BBCTop40PlaylistDataItemTemplate}"
+                  ItemsSource="{Binding PlaylistItems}" 
+                  SelectedItem="{Binding SelectedItem, Mode=TwoWay}"
+                  Margin="10,10,0,0" />
+        
         <StackPanel Orientation="Horizontal" Visibility="{Binding VideoListProgress}" HorizontalAlignment="Center" VerticalAlignment="Center">
             <ProgressRing x:Name="videoListProgress" IsActive="{Binding VideosLoading}"></ProgressRing>
             <TextBlock x:Name="videoLoadingStatus" Foreground="White" Margin="4,0,0,0">Loading videos</TextBlock>
         </StackPanel>
+        
         <Border Grid.Column="1" Margin="0" BorderThickness="0" Background="#FF5A5A5A">
             <Grid>
                 <Grid.RowDefinitions>
