@@ -49,11 +49,31 @@ namespace TopTastic.ViewModel
             private set;
         }
 
+
         void CreatCommands()
         {
             this.CreateYoutubePlaylistCommand = new RelayCommand(CreatePlaylist, CanCreatePlaylist);
             this.DownloadVideoCommand = new RelayCommand(DownloadVideo, CanDownloadVideo);
             this.DownloadAudioCommand = new RelayCommand(DownloadAudio, CanDownloadAudio);
+        }
+
+        async void LaunchUri(string videoId)
+        {
+            // The URI to launch
+            var videoUri = new Uri("https://www.youtube.com/watch?v=" + videoId);
+
+            // Launch the URI
+            var success = await Windows.System.Launcher.LaunchUriAsync(videoUri);
+
+            if (success)
+            {
+                // URI launched
+            }
+            else
+            {
+                // URI launch failed
+            }
+
         }
 
         void CreatePlaylist()
@@ -133,6 +153,7 @@ namespace TopTastic.ViewModel
         }
 
         #endregion
+
 
         #region AppBar status
 
@@ -217,9 +238,28 @@ namespace TopTastic.ViewModel
             }
             set
             {
-                Set(() => SelectedItem, ref _selectedItem, value);
-                PlayVideo(_service, value.VideoId);
-                UpdateArtistInfo(_service, value.Artist);
+                if (value != null)
+                {
+                    Set(() => SelectedItem, ref _selectedItem, value);
+                    PlayVideo(_service, value.VideoId);
+                    UpdateArtistInfo(_service, value.Artist);
+                }
+            }
+        }
+
+        public PlaylistItemViewModel SelectedItemNarrow
+        {
+            get
+            {
+                return _selectedItem;
+            }
+            set
+            {
+                if (value != null)
+                {
+                    Set(() => SelectedItemNarrow, ref _selectedItem, value);
+                    LaunchUri(value.VideoId);
+                }
             }
         }
 

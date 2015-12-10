@@ -44,7 +44,7 @@ namespace TopTastic
 
         private void AdaptiveStates_CurrentStateChanged(object sender, VisualStateChangedEventArgs e)
         {
-
+           
         }
     }
 }
