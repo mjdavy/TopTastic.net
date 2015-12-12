@@ -62,7 +62,7 @@ namespace TopTastic
 
         public static async Task<string> CreatePlaylist(YouTubeService service, string title, string description)
         {
-            // Create a new, private playlist in the authorized user's channel.
+            // Create a new, public playlist in the authorized user's channel.
             var newPlaylist = new Playlist();
             newPlaylist.Snippet = new PlaylistSnippet();
             newPlaylist.Snippet.Title = title;
@@ -77,7 +77,6 @@ namespace TopTastic
         public static async Task<PlaylistItem> AddVideoToPlaylist(YouTubeService service,  string playlistId, string videoId)
         {
             // Add a video to the newly created playlist.
-           
             var newPlaylistItem = new PlaylistItem();
             newPlaylistItem.Snippet = new PlaylistItemSnippet();
             newPlaylistItem.Snippet.PlaylistId = playlistId;
@@ -89,6 +88,7 @@ namespace TopTastic
             return item;
         }
 
+        // MJDTODO - Debug and add automated test
 
         public static async Task<string> FindPlaylistByName(YouTubeService service, string title)
         {
@@ -221,18 +221,23 @@ namespace TopTastic
 
         public static async Task<string> CreatePlaylistFromData(YouTubeService service, IPlaylistData playlistData)
         {
-            var playlistId = await YouTubeHelper.CreatePlaylist(service, playlistData.Title, playlistData.Description);
+            var playlistId = await FindPlaylistByName(service, playlistData.Title);
 
-            foreach(var searchKey in playlistData.SearchKeys)
+            if (string.IsNullOrEmpty(playlistId))
             {
-                var videoId = await YouTubeHelper.FindVideoId(service, searchKey);
+                playlistId = await YouTubeHelper.CreatePlaylist(service, playlistData.Title, playlistData.Description);
 
-                if (string.IsNullOrEmpty(videoId))
+                foreach (var searchKey in playlistData.SearchKeys)
                 {
-                    continue;
-                }
+                    var videoId = await YouTubeHelper.FindVideoId(service, searchKey);
 
-                await YouTubeHelper.AddVideoToPlaylist(service, playlistId, videoId);
+                    if (string.IsNullOrEmpty(videoId))
+                    {
+                        continue;
+                    }
+
+                    await YouTubeHelper.AddVideoToPlaylist(service, playlistId, videoId);
+                }
             }
 
             return playlistId;

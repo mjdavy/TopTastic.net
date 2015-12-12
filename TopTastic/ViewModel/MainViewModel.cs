@@ -57,13 +57,13 @@ namespace TopTastic.ViewModel
             this.DownloadAudioCommand = new RelayCommand(DownloadAudio, CanDownloadAudio);
         }
 
-        async void LaunchUri(string videoId)
-        {
-            // The URI to launch
-            var videoUri = new Uri("https://www.youtube.com/watch?v=" + videoId);
+        //new Uri("https://www.youtube.com/playlist?list=" + playlistId);
+        //new Uri("https://www.youtube.com/watch?v=" + videoId);
 
+        async void LaunchUri(Uri uri)
+        {
             // Launch the URI
-            var success = await Windows.System.Launcher.LaunchUriAsync(videoUri);
+            var success = await Windows.System.Launcher.LaunchUriAsync(uri);
 
             if (success)
             {
@@ -82,13 +82,15 @@ namespace TopTastic.ViewModel
             this.AppBarStatusText = "Creating YouTube Playlist";
             this.AppBarStatusIndeterminate = true;
             this.PlaylistCreationInProgress = true;
-            _service.CreatePlaylist(_playlistData, (playlistid, err) =>
+            _service.CreatePlaylist(_playlistData, (playlistId, err) =>
             {
                 if (err == null)
                 {
                     // MJDTODO
-                    System.Diagnostics.Debug.WriteLine(playlistid);
+                    System.Diagnostics.Debug.WriteLine(playlistId);
                     this.AppBarStatusVisibilty = Visibility.Collapsed;
+                    var playlistUri = new Uri("https://www.youtube.com/playlist?list=" + playlistId);
+                    LaunchUri(playlistUri);
                 }
                 else
                 {
@@ -107,7 +109,7 @@ namespace TopTastic.ViewModel
             this.AppBarStatusText = "Downloading Media";
             this.AppBarStatusIndeterminate = true;
             this.DownloadMediaInProgress = true;
-            
+
             _service.DownloadMedia(this.PlayerUri, this.SelectedItem.Artist, this.SelectedItem.Title, extractAudio, (status, err) =>
             {
                 if (err == null)
@@ -241,24 +243,17 @@ namespace TopTastic.ViewModel
                 if (value != null)
                 {
                     Set(() => SelectedItem, ref _selectedItem, value);
-                    PlayVideo(_service, value.VideoId);
-                    UpdateArtistInfo(_service, value.Artist);
-                }
-            }
-        }
+                    if (Windows.System.Profile.AnalyticsInfo.VersionInfo.DeviceFamily == "Windows.Mobile")
+                    {
+                        var videoUri = new Uri("https://www.youtube.com/watch?v=" + value.VideoId);
+                        LaunchUri(videoUri);
+                    }
+                    else
+                    {
+                        PlayVideo(_service, value.VideoId);
+                        UpdateArtistInfo(_service, value.Artist);
+                    }
 
-        public PlaylistItemViewModel SelectedItemNarrow
-        {
-            get
-            {
-                return _selectedItem;
-            }
-            set
-            {
-                if (value != null)
-                {
-                    Set(() => SelectedItemNarrow, ref _selectedItem, value);
-                    LaunchUri(value.VideoId);
                 }
             }
         }
@@ -372,7 +367,7 @@ namespace TopTastic.ViewModel
                     this._playlistData = playlistData;
                     this.PlaylistItems = playlistItems;
                     this.UpdateVideoInfo(service, playlistData);
-                    
+
                 }
                 else
                 {
@@ -385,23 +380,23 @@ namespace TopTastic.ViewModel
 
         void UpdateVideoInfo(IDataService service, BBCTop40PlaylistData playlistData)
         {
-            service.GetVideoInfo(playlistData,(videos, err) =>
-            {
-                if (err == null)
-                {
-                    foreach(var video in videos)
-                    {
-                        PlaylistItems[video.Index].VideoId = video.VideoId;
-                        PlaylistItems[video.Index].Thumbnail =video.ThumbnailUrl;
-                        PlaylistItems[video.Index].VideoId = video.VideoId;
-                    }
-                }
-                else
-                {
+            service.GetVideoInfo(playlistData, (videos, err) =>
+             {
+                 if (err == null)
+                 {
+                     foreach (var video in videos)
+                     {
+                         PlaylistItems[video.Index].VideoId = video.VideoId;
+                         PlaylistItems[video.Index].Thumbnail = video.ThumbnailUrl;
+                         PlaylistItems[video.Index].VideoId = video.VideoId;
+                     }
+                 }
+                 else
+                 {
                     /// if there is an error should create a property and bind to it for better practices
                     System.Diagnostics.Debug.WriteLine(err.ToString());
-                }
-            });
+                 }
+             });
         }
 
         void UpdateArtistInfo(IDataService service, string artistQuery)
