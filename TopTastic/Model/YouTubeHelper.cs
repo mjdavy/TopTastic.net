@@ -96,7 +96,7 @@ namespace TopTastic
             req.Mine = true;
             var resp = await req.ExecuteAsync();
 
-            var m = from x in resp.Items where x.Snippet.Title == title select x.Id;
+            var m = from x in resp.Items where x.Snippet.Title.Trim() == title.Trim() select x.Id;
 
             if (m == null || m.Count() == 0)
             {
