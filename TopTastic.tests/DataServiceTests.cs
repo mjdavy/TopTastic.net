@@ -29,5 +29,27 @@ namespace TopTastic.tests
             var expected = "Justin Bieber - What do you mean.mp3";
             Assert.AreEqual(expected, actual);
         }
+
+        [TestMethod]
+        public async void GetMockPlaylistData()
+        {
+            var ds = new MockDataService();
+            BBCTop40PlaylistData result = null;
+
+            ds.GetPlaylistData((playlistData, err) =>
+            {
+                if (err == null)
+                {
+                    var expected = result.Items.Count;
+                    Assert.AreEqual(40, expected);
+                }
+                else
+                {
+                    
+                }
+            });
+        }
+
+        
     }
 }
