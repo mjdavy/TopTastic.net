@@ -1,9 +1,9 @@
 ﻿{
   "dependencies": {
-    "Google.Apis.YouTube.v3": "1.9.2.1450",
-    "Microsoft.ApplicationInsights": "1.0.0",
-    "Microsoft.ApplicationInsights.PersistenceChannel": "1.0.0",
-    "Microsoft.ApplicationInsights.WindowsApps": "1.0.0",
+    "Google.Apis.YouTube.v3": "1.10.0.1560",
+    "Microsoft.ApplicationInsights": "1.2.3",
+    "Microsoft.ApplicationInsights.PersistenceChannel": "1.2.3",
+    "Microsoft.ApplicationInsights.WindowsApps": "1.1.1",
     "Microsoft.NETCore.UniversalWindowsPlatform": "5.0.0",
     "MvvmLight": "5.2.0",
     "MyToolkit.Extended": "2.5.8",

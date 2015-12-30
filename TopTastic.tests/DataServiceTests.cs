@@ -47,6 +47,24 @@ namespace TopTastic.tests
             Assert.IsTrue(result);
         }
 
+        [TestMethod]
+        public async Task TestVevoVideo()
+        {
+            // Bieber - love yourself
+            var videoId = "oyEuk8j8imI";
+            var result = await TryVideo(videoId);
+            Assert.IsTrue(result);
+        }
+
+        [TestMethod]
+        public async Task TestNonVevoVideo()
+        {
+            // NHS choir - Bridge over you
+            var videoId = "ve1sevQpQLQ";
+            var result = await TryVideo(videoId);
+            Assert.IsTrue(result);
+        }
+
         public async Task<bool> TryVideoUris()
         {
             var playlistData = GetMockPlaylistData();
@@ -56,20 +74,19 @@ namespace TopTastic.tests
 
             foreach(var info in videoInfo)
             {
-                var result = await TryVideoUri(info);
+                var result = await TryVideo(info.VideoId);
                 if (result == false) return result;
             }
 
-            return true;
-           
+            return true;  
         }
 
-        public async Task<bool> TryVideoUri(VideoInfo videoInfo)
+        public async Task<bool> TryVideo(string videoId)
         {
             bool result = false;
             try
             {
-                var videoUri = GetMockVideoUri(videoInfo);
+                var videoUri = GetMockVideoUri(videoId);
                 var client = new HttpClient();
                 client.DefaultRequestHeaders.Add("user-agent", "Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.2; WOW64; Trident/6.0)");
                 var response = await client.GetAsync(videoUri);
@@ -88,13 +105,13 @@ namespace TopTastic.tests
             return result;
         }
 
-        public Uri GetMockVideoUri(VideoInfo info)
+        public Uri GetMockVideoUri(string videoId)
         {
             var ds = new MockDataService();
             Uri result = null;
             var completion = new ManualResetEvent(false);
 
-            ds.GetYoutubeVideoUri(info.VideoId, (youTubUri, err) =>
+            ds.GetYoutubeVideoUri(videoId, (youTubUri, err) =>
             {
                 result = youTubUri.Uri;
                 completion.Set();
