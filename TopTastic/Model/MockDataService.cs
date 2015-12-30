@@ -80,9 +80,20 @@ namespace TopTastic.Model
             callback(videoList, ex);
         }
 
-        public void GetYoutubeVideoUri(string videoId, Action<YouTubeUri, Exception> callback)
+        public async void GetYoutubeVideoUri(string videoId, Action<YouTubeUri, Exception> callback)
         {
-            
+            Exception ex = null;
+            YouTubeUri youTubeUri = null;
+            try
+            {
+                youTubeUri = await YouTube.GetVideoUriAsync(videoId, YouTubeQuality.Quality720P);
+            }
+            catch (Exception e)
+            {
+                ex = e;
+            }
+
+            callback(youTubeUri, ex);
         }
     }
 }
