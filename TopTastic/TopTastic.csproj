@@ -121,6 +121,15 @@
     <Compile Include="PhonePage.xaml.cs">
       <DependentUpon>PhonePage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="YoutubeExtractor\AdaptiveType.cs" />
+    <Compile Include="YoutubeExtractor\AudioType.cs" />
+    <Compile Include="YoutubeExtractor\Decipherer.cs" />
+    <Compile Include="YoutubeExtractor\DownloadUrlResolver.cs" />
+    <Compile Include="YoutubeExtractor\HttpHelper.cs" />
+    <Compile Include="YoutubeExtractor\VideoInfo.cs" />
+    <Compile Include="YoutubeExtractor\VideoNotAvailableException.cs" />
+    <Compile Include="YoutubeExtractor\VideoType.cs" />
+    <Compile Include="YoutubeExtractor\YoutubeParseException.cs" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">

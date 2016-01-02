@@ -1,10 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using MyToolkit.Multimedia;
 using Windows.Storage;
 using EchoNest;
 
@@ -80,20 +75,23 @@ namespace TopTastic.Model
             callback(videoList, ex);
         }
 
-        public async void GetYoutubeVideoUri(string videoId, Action<YouTubeUri, Exception> callback)
+        public async void GetYoutubeVideoUri(string videoId, Action<Uri, Exception> callback)
         {
             Exception ex = null;
-            YouTubeUri youTubeUri = null;
+            Uri videoUri = null;
+
             try
             {
-                youTubeUri = await YouTube.GetVideoUriAsync(videoId, YouTubeQuality.Quality720P);
+                videoUri = await YoutubeExtractor.DownloadUrlResolver.GetVideoUriAsync(videoId);
+                //var youTubeUri = await YouTube.GetVideoUriAsync(videoId, YouTubeQuality.Quality720P);
+                //videoUri = youTubeUri.Uri;
             }
             catch (Exception e)
             {
                 ex = e;
             }
 
-            callback(youTubeUri, ex);
+            callback(videoUri, ex);
         }
     }
 }

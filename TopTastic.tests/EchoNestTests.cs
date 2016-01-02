@@ -44,11 +44,5 @@ namespace TopTastic.tests
             var actual = result.Biographies.Count;
             Assert.AreEqual(expected, actual);
         }
-
-        [TestMethod]
-        public void TestSomething()
-        {
-            Assert.AreEqual(1, 1);
-        }
     }
 }

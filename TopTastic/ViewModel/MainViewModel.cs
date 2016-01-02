@@ -424,7 +424,7 @@ namespace TopTastic.ViewModel
             {
                 if (err == null)
                 {
-                    this.PlayerUri = youtubeUri.Uri;
+                    this.PlayerUri = youtubeUri;
                 }
                 else
                 {

@@ -41,13 +41,6 @@ namespace TopTastic.tests
         }
 
         [TestMethod]
-        public async Task TestVideoUris()
-        {
-            bool result = await TryVideoUris();
-            Assert.IsTrue(result);
-        }
-
-        [TestMethod]
         public async Task TestVevoVideo()
         {
             // Bieber - love yourself
@@ -63,22 +56,6 @@ namespace TopTastic.tests
             var videoId = "ve1sevQpQLQ";
             var result = await TryVideo(videoId);
             Assert.IsTrue(result);
-        }
-
-        public async Task<bool> TryVideoUris()
-        {
-            var playlistData = GetMockPlaylistData();
-            var videoInfo = GetMockVideoInfo(playlistData);
-            var expected = videoInfo.Count;
-            Assert.AreEqual(expected, 40);
-
-            foreach(var info in videoInfo)
-            {
-                var result = await TryVideo(info.VideoId);
-                if (result == false) return result;
-            }
-
-            return true;  
         }
 
         public async Task<bool> TryVideo(string videoId)
@@ -111,9 +88,9 @@ namespace TopTastic.tests
             Uri result = null;
             var completion = new ManualResetEvent(false);
 
-            ds.GetYoutubeVideoUri(videoId, (youTubUri, err) =>
+            ds.GetYoutubeVideoUri(videoId, (youTubeUri, err) =>
             {
-                result = youTubUri.Uri;
+                result = youTubeUri;
                 completion.Set();
             });
 
