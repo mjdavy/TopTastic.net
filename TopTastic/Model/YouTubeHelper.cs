@@ -94,6 +94,7 @@ namespace TopTastic
         {
             var req = service.Playlists.List("snippet");
             req.Mine = true;
+            
             var resp = await req.ExecuteAsync();
 
             var m = from x in resp.Items where x.Snippet.Title.Trim() == title.Trim() select x.Id;

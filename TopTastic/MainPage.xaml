@@ -14,7 +14,7 @@
     <Page.BottomAppBar>
         <CommandBar x:Name="MainCommandBar">
             <CommandBar.Content>
-                <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10,5,0,0" Width="200" Visibility="{Binding AppBarStatusVisibilty}">
+                <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10,5,0,0" Width="400" Visibility="{Binding AppBarStatusVisibilty}">
                     <ProgressBar Height="10" Width="100" Margin="0" VerticalAlignment="Stretch" HorizontalAlignment="Left" Value="{Binding AppBarStatusValue}" ShowError="{Binding AppBarStatusError}" IsIndeterminate="{Binding AppBarStatusIndeterminate}"/>
                     <TextBlock x:Name="textBlock" Margin="0" Text="{Binding AppBarStatusText}"/>
                 </StackPanel>

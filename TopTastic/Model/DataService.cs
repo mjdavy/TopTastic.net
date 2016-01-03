@@ -31,7 +31,7 @@ namespace TopTastic.Model
 
             try
             {
-                var service = await YouTubeHelper.CreateAuthenticatedService("martin.davy@gmail.com","Top40");
+                var service = await YouTubeHelper.CreateAuthenticatedService("user","Top40");
                 playlistId = await YouTubeHelper.CreatePlaylistFromData(service, playlistData);
             }
             catch (Exception e)
