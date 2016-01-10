@@ -264,5 +264,23 @@ namespace TopTastic.Model
             var nodes = doc.GetElementsByTagName("EchnoNestApiKey");
             return nodes[0].InnerText;
         }
+
+        public async void SearchYouTube(string searchString, Action<string, Exception> callback)
+        {
+            Exception ex = null;
+            string videoId = null;
+
+            try
+            {
+                YouTubeService service = YouTubeHelper.CreateService("Top40");
+                videoId = await YouTubeHelper.FindVideoId(service, searchString);
+            }
+            catch (Exception e)
+            {
+                ex = e;
+            }
+
+            callback(videoId, ex);
+        }
     }
 }

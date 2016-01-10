@@ -15,8 +15,6 @@ namespace TopTastic
     using System.Threading;
     using Google.Apis.Services;
     using Google.Apis.YouTube.v3.Data;
-    using Windows.Storage;
-    using System.IO;
     using Model;
 
     /// <summary>
@@ -177,7 +175,7 @@ namespace TopTastic
                 return string.Empty;
             }
 
-            return results.First().Id.VideoId;
+            return results.First(item => item.Id.VideoId != null).Id.VideoId;
         }
 
         public static async Task<string> GetVideoTitleFromId(YouTubeService service, string videoId)

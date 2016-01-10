@@ -31,6 +31,12 @@ namespace TopTastic.ViewModel
         private bool _downloadMediaInProgress;
 
         #region Commands
+
+        public RelayCommand SearchYouTubeCommand
+        {
+            get;
+            private set;
+        }
         public RelayCommand CreateYoutubePlaylistCommand
         {
             get;
@@ -52,9 +58,15 @@ namespace TopTastic.ViewModel
 
         void CreatCommands()
         {
+            this.SearchYouTubeCommand = new RelayCommand(SearchYouTube, CanSearchYoutube);
             this.CreateYoutubePlaylistCommand = new RelayCommand(CreatePlaylist, CanCreatePlaylist);
             this.DownloadVideoCommand = new RelayCommand(DownloadVideo, CanDownloadVideo);
             this.DownloadAudioCommand = new RelayCommand(DownloadAudio, CanDownloadAudio);
+        }
+
+        private bool CanSearchYoutube()
+        {
+            return true;
         }
 
         //new Uri("https://www.youtube.com/playlist?list=" + playlistId);
@@ -75,7 +87,31 @@ namespace TopTastic.ViewModel
             }
 
         }
-
+ 
+        private void SearchYouTube()
+        {
+            this.SelectedItem = null;
+            this.ArtistInfo = null;
+            this.AppBarStatusVisibilty = Visibility.Visible;
+            this.AppBarStatusText = "Searching YouTube";
+            this.AppBarStatusIndeterminate = true;
+            _service.SearchYouTube("Justin Bieber", (videoId, err) =>
+            {
+                if (err == null)
+                {
+                    this.AppBarStatusVisibilty = Visibility.Collapsed;
+                    this.PlayVideo(_service, videoId);
+                }
+                else
+                {
+                    /// if there is an error should create a property and bind to it for better practices
+                    System.Diagnostics.Debug.WriteLine(err.ToString());
+                    this.AppBarStatusError = true;
+                    this.AppBarStatusText = "YouTube search failed.";
+                }
+                
+            });
+        }
         void CreatePlaylist()
         {
             this.AppBarStatusVisibilty = Visibility.Visible;
@@ -240,9 +276,10 @@ namespace TopTastic.ViewModel
             }
             set
             {
+                Set(() => SelectedItem, ref _selectedItem, value);
                 if (value != null)
                 {
-                    Set(() => SelectedItem, ref _selectedItem, value);
+                    
                     if (Windows.System.Profile.AnalyticsInfo.VersionInfo.DeviceFamily == "Windows.Mobile")
                     {
                         var videoUri = new Uri("https://www.youtube.com/watch?v=" + value.VideoId);

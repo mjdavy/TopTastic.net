@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Windows.Storage;
 using EchoNest;
+using Google.Apis.YouTube.v3;
 
 namespace TopTastic.Model
 {
@@ -93,5 +94,11 @@ namespace TopTastic.Model
 
             callback(videoUri, ex);
         }
+
+        public void SearchYouTube(string searchString, Action<string, Exception> callback)
+        {
+            throw new NotImplementedException();
+        }
+
     }
 }
