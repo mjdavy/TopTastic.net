@@ -29,6 +29,7 @@ namespace TopTastic.ViewModel
         private bool _appbarStatusIndeterminate;
         private bool _playlistCreationInProgress;
         private bool _downloadMediaInProgress;
+        private Visibility _searchboxVisibility;
 
         #region Commands
 
@@ -56,7 +57,7 @@ namespace TopTastic.ViewModel
         }
 
 
-        void CreatCommands()
+        private void CreatCommands()
         {
             this.SearchYouTubeCommand = new RelayCommand(SearchYouTube, CanSearchYoutube);
             this.CreateYoutubePlaylistCommand = new RelayCommand(CreatePlaylist, CanCreatePlaylist);
@@ -87,15 +88,20 @@ namespace TopTastic.ViewModel
             }
 
         }
- 
-        private void SearchYouTube()
+
+        public void SearchYouTube()
+        {
+           
+        }
+
+        public void SearchYouTube(string searchText)
         {
             this.SelectedItem = null;
             this.ArtistInfo = null;
             this.AppBarStatusVisibilty = Visibility.Visible;
             this.AppBarStatusText = "Searching YouTube";
             this.AppBarStatusIndeterminate = true;
-            _service.SearchYouTube("Justin Bieber", (videoId, err) =>
+            _service.SearchYouTube(searchText, (videoId, err) =>
             {
                 if (err == null)
                 {
@@ -308,6 +314,7 @@ namespace TopTastic.ViewModel
                 DownloadVideoCommand.RaiseCanExecuteChanged();
             }
         }
+
 
         public Visibility VideoListProgress
         {

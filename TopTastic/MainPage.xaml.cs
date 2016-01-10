@@ -46,5 +46,29 @@ namespace TopTastic
         {
            
         }
+
+        private void TextBox_KeyDown(object sender, KeyRoutedEventArgs e)
+        {
+            if (e.Key == Windows.System.VirtualKey.Enter)
+            {
+                TextBox t = sender as TextBox;
+                var searchText = t.Text;
+                System.Diagnostics.Debug.WriteLine(string.Format("Got {0}", searchText));
+                e.Handled = true;
+                t.Visibility = Visibility.Collapsed;
+
+                if (!string.IsNullOrEmpty(searchText))
+                {
+                    var vm = this.DataContext as ViewModel.MainViewModel;
+                    vm.SearchYouTube(searchText);
+                }
+            }
+        }
+
+        private void AppBarButton_Click(object sender, RoutedEventArgs e)
+        {
+            this.SearchBox.Visibility = Visibility.Visible;
+            this.SearchBox.Focus(FocusState.Keyboard);
+        }
     }
 }
