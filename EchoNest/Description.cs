@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace EchoNest.Artist
+namespace EchoNest
 {
     public class Description : Attribute
     {

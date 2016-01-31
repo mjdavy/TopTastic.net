@@ -2,7 +2,7 @@
 using System.ComponentModel;
 using System.Reflection;
 
-namespace EchoNest.Artist
+namespace EchoNest
 {
     internal class EnumHelpers
     {
