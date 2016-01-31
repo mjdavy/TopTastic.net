@@ -11,13 +11,12 @@ namespace TopTastic.tests
     [SuppressMessage("StyleCopPlus.StyleCopPlusRules", "SP0100:AdvancedNamingRules", Justification = "OK.")]
     public class EchoNestPlaylistTests : EchoNestTests
     {
-
+        [TestMethod]
         [DataRow("Jimi Hendrix")]
         [DataRow("Amy Winehouse")]
         [DataRow("Miles Davis")]
         [DataRow("Alison Krauss")]
         [DataRow("Led Zeppelin")]
-        [TestMethod]
         public void GetBasicPlaylist_WhereArtistName_HasSongsByArtist(string artistName)
         {
             BasicArgument basicArgument = new BasicArgument
@@ -44,9 +43,9 @@ namespace TopTastic.tests
             }
         }
 
+        [TestMethod]
         [DataRow("Apocalypse Now Phyc Rock", "60s,guitar,psychadelic,rock,sountrack^0.5", "eeirie^0.5,dark^0.5,disturbing^0.5,groovy^0.5,melancholia^0.5,ominous^0.5")]
         [DataRow("Apocalypse Now", "60s,psychadelic,rock^0.5,sountrack^0.5", "eeirie,dark,disturbing,groovy,melancholia,ominous^0.5")]
-        [TestMethod]
         public void GetStaticPlaylist_WhereMoodAndStyle_HasVarietyOfArtists(string title, string styles, string moods)
         {
             TermList styleTerms = new TermList();
@@ -88,6 +87,81 @@ namespace TopTastic.tests
                 }
             }
         }
-    }
 
+        [DataRow("Oceanlab")]
+        [TestMethod]
+        public void GetPlaylistByArtistOrSong(string query)
+        {
+            var seedArtists = new TermList();
+            seedArtists.Add(query);
+
+            StaticArgument staticArgument = new StaticArgument
+            {
+                Results = 40,
+                Artist = seedArtists,
+                Type = "artist-radio"
+            };
+
+            using (var session = new EchoNestSession(ApiKey))
+            {
+                PlaylistResponse searchResponse = session.Query<Static>().Execute(staticArgument);
+
+                Assert.IsNotNull(searchResponse);
+                Assert.IsNotNull(searchResponse.Songs);
+                Assert.IsTrue(searchResponse.Songs.Any());
+
+                Assert.AreEqual(40, searchResponse.Songs.Count);
+            }
+        }
+
+        [TestMethod]
+        [DataRow("Everyday People")]
+        public void GetFourtyRunningSongs(string query)
+        {
+            var id = GetSongId(query);
+            var songIds = new TermList();
+            songIds.Add(id);
+
+            StaticArgument staticArgument = new StaticArgument
+            {
+                Type = "song-radio",
+                SongID = songIds,
+                Results = 40,
+                MinTempo = 88,
+                MaxTempo = 92,
+                Variety = 1
+            };
+                
+
+            using (var session = new EchoNestSession(ApiKey))
+            {
+                PlaylistResponse searchResponse = session.Query<Static>().Execute(staticArgument);
+
+                Assert.IsNotNull(searchResponse);
+                Assert.IsNotNull(searchResponse.Songs);
+                Assert.IsTrue(searchResponse.Songs.Any());
+
+                Assert.AreEqual(40, searchResponse.Songs.Count);
+            }
+        }
+
+        public string GetSongId(string title)
+        {
+            SearchArgument searchArgument = new SearchArgument
+            {
+                Title = title
+            };
+
+            using (var session = new EchoNestSession(ApiKey))
+            {
+                SearchResponse searchResponse = session.Query<Search>().Execute(searchArgument);
+
+                Assert.IsNotNull(searchResponse);
+                Assert.IsNotNull(searchResponse.Songs);
+                Assert.IsTrue(searchResponse.Songs.Count > 0);
+
+                return searchResponse.Songs.First().ID;
+            }
+        }
+    }
 }
