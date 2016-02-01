@@ -65,7 +65,13 @@ namespace TopTastic
             }
         }
 
-        private void AppBarButton_Click(object sender, RoutedEventArgs e)
+        private void SearchYouTube_Click(object sender, RoutedEventArgs e)
+        {
+            this.SearchBox.Visibility = Visibility.Visible;
+            this.SearchBox.Focus(FocusState.Keyboard);
+        }
+
+        private void GeneralPlaylist_Click(object sender, RoutedEventArgs e)
         {
             this.SearchBox.Visibility = Visibility.Visible;
             this.SearchBox.Focus(FocusState.Keyboard);

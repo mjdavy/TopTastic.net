@@ -19,8 +19,9 @@
                     <TextBlock x:Name="textBlock" Margin="0" Text="{Binding AppBarStatusText}"/>
                 </StackPanel>
             </CommandBar.Content>
-            <AppBarButton Icon="Find" Label="Search YouTube" Command="{Binding SearchYouTubeCommand}" Click="AppBarButton_Click"/>
-            <AppBarButton Icon="Bookmarks" Label="Create YouTube Playlist" Command="{Binding CreateYoutubePlaylistCommand}"/>
+            <AppBarButton Icon="Find" Label="Search YouTube" Command="{Binding SearchYouTubeCommand}" Click="SearchYouTube_Click"/>
+            <AppBarButton Icon="Bookmarks" Label="Generate playlist" Command="{Binding CreateNewPlaylistCommand}" Click="GeneralPlaylist_Click"/>
+            <AppBarButton Icon="ReShare" Label="Share Playlist to YouTube" Command="{Binding CreateYoutubePlaylistCommand}"/>
             <AppBarButton Icon="Video" Label="Download Video" Command="{Binding DownloadVideoCommand}"/>
             <AppBarButton Icon="Audio" Label="Download Audio" Command="{Binding DownloadAudioCommand}"/>
         </CommandBar>
