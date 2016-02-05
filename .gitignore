@@ -3,6 +3,8 @@
 
 # Other files
 TopTastic/Assets/client_secrets.json
+TopTastic/Assets/echonest_secrets.xml
+TopTastic.tests/Assets/echonest_secrets.xml
 
 # User-specific files
 *.suo
