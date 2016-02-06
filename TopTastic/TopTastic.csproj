@@ -142,8 +142,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Assets\DownArrow.png" />
-    <Content Include="..\TopTastic.tests\Assets\echonest_secrets.xml">
-      <Link>Assets\echonest_secrets.xml</Link>
+    <Content Include="Assets\echonest_secrets.xml">
+      <SubType>Designer</SubType>
     </Content>
     <Content Include="Assets\p030kf95.jpg" />
     <Content Include="Assets\Rectangle.png" />

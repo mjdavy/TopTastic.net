@@ -32,7 +32,7 @@ namespace TopTastic.tests
             var secrets = new Uri("ms-appx:///Assets/echonest_secrets.xml");
             StorageFile sFile = await StorageFile.GetFileFromApplicationUriAsync(secrets);
             XmlDocument doc =  await XmlDocument.LoadFromFileAsync(sFile);
-            var nodes = doc.GetElementsByTagName("EchnoNestApiKey");
+            var nodes = doc.GetElementsByTagName("EchoNestApiKey");
             return nodes[0].InnerText;
         }
     }
