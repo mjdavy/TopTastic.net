@@ -91,8 +91,8 @@
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="5*"/>
-                        <RowDefinition Height="60*"/>
-                        <RowDefinition Height="30*"/>
+                        <RowDefinition Height="400"/>
+                        <RowDefinition Height="35*"/>
                     </Grid.RowDefinitions>
                     <TextBlock Grid.Row="0" Text="{Binding SelectedItem.ArtistAndTitle, Mode=OneWay}" Style="{StaticResource TitleTextBlockStyle}" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                     <MediaElement x:Name="player"  Grid.Row="1" MediaEnded="player_MediaEnded" MediaFailed="player_MediaFailed" MediaOpened="player_MediaOpened"
