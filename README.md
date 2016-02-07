@@ -8,5 +8,7 @@ Now uses EchoNest for artist bios and other metadata (tbd).
 
 # Setup 
 In the Assets folder create two files
-* Create the files echonest_secrets.xml (echonest API key) https://developer.echonest.com/
+* Create echonest_secrets.xml (echonest API key) https://developer.echonest.com/ this is an xml file with the format 
+<EchoNestApiKey>-- your api key --</EchoNestApiKey>
+
 * Create client_secrets.json (google oAuth2 key) (https://console.developers.google.com/apis)
