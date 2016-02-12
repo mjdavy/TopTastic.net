@@ -8,7 +8,7 @@ namespace TopTastic.Model
 {
     public class MockDataService : IDataService
     {
-        public void CreatePlaylist(IPlaylistData playlistData, Action<string, Exception> callback)
+        public void SharePlaylistOnYouTube(IPlaylistData playlistData, Action<string, Exception> callback)
         {
             throw new NotImplementedException();
         }
@@ -37,10 +37,10 @@ namespace TopTastic.Model
             callback(artistInfo, ex);
         }
 
-        public async void GetPlaylistData(Action<BBCTop40PlaylistData, Exception> callback)
+        public async void GetBBCPlaylistData(Action<PlaylistData, Exception> callback)
         {
             var testFileUri = new Uri("ms-appx:///Assets/TestChart.html");
-            BBCTop40PlaylistData playlistData = null;
+            PlaylistData playlistData = null;
             Exception err = null;
             try
             {
@@ -100,5 +100,9 @@ namespace TopTastic.Model
             throw new NotImplementedException();
         }
 
+        public void GetEchoNestPlaylistData(string searchString, Action<PlaylistData, Exception> callback)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -54,6 +54,7 @@ namespace TopTastic
                     if (action != null)
                     { 
                         action(searchText);
+                        vm.SearchAction = null;
                     }
                 }
             }

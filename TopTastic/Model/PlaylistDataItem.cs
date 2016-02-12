@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TopTastic.Model
 {
-    public class BBCTop40PlaylistDataItem
+    public class PlaylistDataItem
     {
         public int Position { get; set; }
         public string Status { get; set; }

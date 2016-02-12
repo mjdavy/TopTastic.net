@@ -11,7 +11,7 @@ namespace TopTastic.ViewModel
 {
     public class PlaylistItemViewModel : ViewModelBase
     {
-        BBCTop40PlaylistDataItem item;
+        PlaylistDataItem item;
         string imageUrl = null;
         string videoId = null;
         private Uri videoUri;
@@ -23,7 +23,7 @@ namespace TopTastic.ViewModel
             NoChange
         }
 
-        public PlaylistItemViewModel(BBCTop40PlaylistDataItem item)
+        public PlaylistItemViewModel(PlaylistDataItem item)
         {
             if (item ==null)
             {

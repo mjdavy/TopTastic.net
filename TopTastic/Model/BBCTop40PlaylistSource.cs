@@ -9,39 +9,32 @@ using Windows.Data.Html;
 
 namespace TopTastic.Model
 {
-    public class BBCTop40PlaylistSource
+    public class BBCTop40PlaylistSource : IPlaylistSource
     {
         const string requestUri = @"http://www.bbc.co.uk/radio1/chart/singles/print";
         private HttpClient client;
 
-        public BBCTop40PlaylistSource(bool descending = false)
+        public BBCTop40PlaylistSource()
         {
             this.client = new HttpClient();
             this.client.DefaultRequestHeaders.Add("user-agent", "Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.2; WOW64; Trident/6.0)");
-            this.Descending = descending;
         }
 
-        public bool Descending
-        {
-            get;
-            set;
-        }
-
-        public async Task<BBCTop40PlaylistData> GetPlaylistAsync()
+        public async Task<PlaylistData> GetPlaylistAsync()
         {
             var response = await client.GetAsync(requestUri);
             response.EnsureSuccessStatusCode();
 
             var html = await response.Content.ReadAsStringAsync();
-            var playlistData = ExtractPlaylistData(html, this.Descending);
+            var playlistData = ExtractPlaylistData(html);
           
             return playlistData;
         }
 
-        public static BBCTop40PlaylistData ExtractPlaylistData(string html, bool descending = false)
+        public static PlaylistData ExtractPlaylistData(string html)
         {
-            var playlistData = new BBCTop40PlaylistData();
-            playlistData.Items = new List<BBCTop40PlaylistDataItem>();
+            var playlistData = new PlaylistData();
+            playlistData.Items = new List<PlaylistDataItem>();
             playlistData.Description = "UK Top 40 singles: http://www.bbc.co.uk/radio1/chart/singles";
             playlistData.Title = string.Format("UK Top 40 {0:D} ", ExtractDate(html));
             playlistData.SearchKeys = new List<string>();
@@ -51,7 +44,7 @@ namespace TopTastic.Model
 
             foreach (Match m in matches)
             {
-                var item = new BBCTop40PlaylistDataItem()
+                var item = new PlaylistDataItem()
                 {
                     Position = HtmlUtilities.ConvertToText(m.Groups["Position"].Value).ToInt(),
                     Status = HtmlUtilities.ConvertToText(m.Groups["Status"].Value),
@@ -62,14 +55,9 @@ namespace TopTastic.Model
                 };
 
                 playlistData.Items.Add(item);
-               
+
                 var searchKey = string.Format("{0} {1}", item.Artist, item.Title);
                 playlistData.SearchKeys.Add(searchKey);
-            }
-
-            if (descending)
-            {
-                playlistData.SearchKeys = playlistData.SearchKeys.Reverse().ToList<string>();
             }
 
             return playlistData;

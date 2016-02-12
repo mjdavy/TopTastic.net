@@ -97,13 +97,13 @@ namespace TopTastic.tests
 
         }
 
-        public BBCTop40PlaylistData GetMockPlaylistData()
+        public PlaylistData GetMockPlaylistData()
         {
             var ds = new MockDataService();
-            BBCTop40PlaylistData result = null;
+            PlaylistData result = null;
             var completion = new ManualResetEvent(false);
 
-            ds.GetPlaylistData((playlistData, err) =>
+            ds.GetBBCPlaylistData((playlistData, err) =>
             {
                 result = playlistData;
                 completion.Set();
@@ -113,7 +113,7 @@ namespace TopTastic.tests
             return result;
         }
 
-        public IList<VideoInfo> GetMockVideoInfo(BBCTop40PlaylistData playlistData)
+        public IList<VideoInfo> GetMockVideoInfo(PlaylistData playlistData)
         {
             var ds = new MockDataService();
             var completion = new ManualResetEvent(false);

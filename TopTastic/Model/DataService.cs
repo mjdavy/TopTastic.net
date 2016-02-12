@@ -24,7 +24,7 @@ namespace TopTastic.Model
         private MediaEncodingProfile encodingProfile;
 
 
-        public async void CreatePlaylist(IPlaylistData playlistData, Action<string, Exception> callback)
+        public async void SharePlaylistOnYouTube(IPlaylistData playlistData, Action<string, Exception> callback)
         {
             string playlistId = null;
             Exception ex = null;
@@ -182,17 +182,26 @@ namespace TopTastic.Model
         }
 
 
-        public async void GetPlaylistData(Action<BBCTop40PlaylistData, Exception> callback)
+        public async void GetBBCPlaylistData(Action<PlaylistData, Exception> callback)
         {
-            var playlistSource = new BBCTop40PlaylistSource();
-            BBCTop40PlaylistData playlistData = null;
+            await GetPlaylistData(PlaylistSourceFactory<BBCTop40PlaylistSource>.GetNewPlaylistSource(), callback);
+        }
+
+        public async void GetEchoNestPlaylistData(string searchString, Action<PlaylistData, Exception> callback)
+        {
+            await GetPlaylistData(PlaylistSourceFactory<EchoNestPlaylistSource>.GetNewPlaylistSource(), callback);
+        }
+
+        public async Task GetPlaylistData(IPlaylistSource playlistSource, Action<PlaylistData, Exception> callback)
+        {
+            PlaylistData playlistData = null;
             Exception err = null;
 
             try
             {
                 playlistData = await playlistSource.GetPlaylistAsync();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 err = ex;
             }
@@ -282,5 +291,6 @@ namespace TopTastic.Model
 
             callback(videoId, ex);
         }
+
     }
 }

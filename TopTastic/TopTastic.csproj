@@ -106,14 +106,17 @@
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Model\BBCTop40PlaylistData.cs" />
-    <Compile Include="Model\BBCTop40PlaylistDataItem.cs" />
+    <Compile Include="Model\EchoNestPlaylistSource.cs" />
+    <Compile Include="Model\IPlaylistSource.cs" />
+    <Compile Include="Model\PlaylistData.cs" />
+    <Compile Include="Model\PlaylistDataItem.cs" />
     <Compile Include="Model\BBCTop40PlaylistSource.cs" />
     <Compile Include="Model\DataService.cs" />
     <Compile Include="Model\ExtensionMethods.cs" />
     <Compile Include="Model\IDataService.cs" />
     <Compile Include="Model\IPlaylistData.cs" />
     <Compile Include="Model\MockDataService.cs" />
+    <Compile Include="Model\PlaylistSourceFactory.cs" />
     <Compile Include="Model\VideoInfo.cs" />
     <Compile Include="Model\YouTubeHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

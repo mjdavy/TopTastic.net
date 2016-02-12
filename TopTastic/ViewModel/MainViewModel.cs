@@ -266,7 +266,7 @@ namespace TopTastic.ViewModel
         {
             this.CreateNewPlaylistCommmand = new RelayCommand(CreateNewPlayList, CanCreateNewPlaylist);
             this.SearchYouTubeCommand = new RelayCommand(SearchYouTube, CanSearchYoutube);
-            this.CreateYoutubePlaylistCommand = new RelayCommand(CreatePlaylist, CanCreatePlaylist);
+            this.CreateYoutubePlaylistCommand = new RelayCommand(SharePlaylistOnYouTube, CanCreatePlaylist);
             this.DownloadVideoCommand = new RelayCommand(DownloadVideo, CanDownloadVideo);
             this.DownloadAudioCommand = new RelayCommand(DownloadAudio, CanDownloadAudio);
         }
@@ -334,28 +334,51 @@ namespace TopTastic.ViewModel
                 
             });
         }
-        void CreatePlaylist()
+        void CreateNewPlaylistFromSearchText(string searchText)
         {
             this.AppBarStatusVisibilty = Visibility.Visible;
             this.AppBarStatusText = "Creating YouTube Playlist";
             this.AppBarStatusIndeterminate = true;
             this.PlaylistCreationInProgress = true;
-            _service.CreatePlaylist(_playlistData, (playlistId, err) =>
+            _service.GetEchoNestPlaylistData(searchText, (playlistItems, err) =>
             {
                 if (err == null)
                 {
                     // MJDTODO
-                    System.Diagnostics.Debug.WriteLine(playlistId);
                     this.AppBarStatusVisibilty = Visibility.Collapsed;
-                    var playlistUri = new Uri("https://www.youtube.com/playlist?list=" + playlistId);
-                    LaunchUri(playlistUri);
+                    
                 }
                 else
                 {
                     /// if there is an error should create a property and bind to it for better practices
                     System.Diagnostics.Debug.WriteLine(err.ToString());
                     this.AppBarStatusError = true;
-                    this.AppBarStatusText = "Failed to create YouTube playlist.";
+                    this.AppBarStatusText = "Failed to generate playlist.";
+                }
+                this.PlaylistCreationInProgress = false;
+            });
+        }
+
+        void SharePlaylistOnYouTube()
+        {
+            this.AppBarStatusVisibilty = Visibility.Visible;
+            this.AppBarStatusText = "Sharing Playlist on your YouTube channel";
+            this.AppBarStatusIndeterminate = true;
+            this.PlaylistCreationInProgress = true;
+            _service.SharePlaylistOnYouTube(_playlistData, (playlistId, err) =>
+            {
+                if (err == null)
+                {
+                    // MJDTODO
+                    System.Diagnostics.Debug.WriteLine(playlistId);
+                    this.AppBarStatusVisibilty = Visibility.Collapsed;
+                }
+                else
+                {
+                    /// if there is an error should create a property and bind to it for better practices
+                    System.Diagnostics.Debug.WriteLine(err.ToString());
+                    this.AppBarStatusError = true;
+                    this.AppBarStatusText = "Failed to share playlist";
                 }
                 this.PlaylistCreationInProgress = false;
             });
@@ -431,22 +454,26 @@ namespace TopTastic.ViewModel
 
         }
 
+        void UpdatePlaylist(IDataService service, PlaylistData playlistData)
+        {
+            var playlistItems = new ObservableCollection<PlaylistItemViewModel>();
+            foreach (var item in playlistData.Items)
+            {
+                playlistItems.Add(new PlaylistItemViewModel(item));
+            }
+            this._playlistData = playlistData;
+            this.PlaylistItems = playlistItems;
+            this.UpdateVideoInfo(service, playlistData);
+        }
+
         void InitializePlaylistItems(IDataService service)
         {
             this.VideosLoading = true;
-            service.GetPlaylistData((playlistData, err) =>
+            service.GetBBCPlaylistData((playlistData, err) =>
             {
                 if (err == null)
                 {
-                    var playlistItems = new ObservableCollection<PlaylistItemViewModel>();
-                    foreach (var item in playlistData.Items)
-                    {
-                        playlistItems.Add(new PlaylistItemViewModel(item));
-                    }
-                    this._playlistData = playlistData;
-                    this.PlaylistItems = playlistItems;
-                    this.UpdateVideoInfo(service, playlistData);
-
+                    UpdatePlaylist(service, playlistData);
                 }
                 else
                 {
@@ -459,7 +486,7 @@ namespace TopTastic.ViewModel
         #endregion
 
         #region Methods
-        void UpdateVideoInfo(IDataService service, BBCTop40PlaylistData playlistData)
+        void UpdateVideoInfo(IDataService service, PlaylistData playlistData)
         {
             service.GetVideoInfo(playlistData, (videos, err) =>
              {

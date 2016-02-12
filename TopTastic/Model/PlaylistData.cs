@@ -2,7 +2,7 @@
 
 namespace TopTastic.Model
 {
-    public class BBCTop40PlaylistData : IPlaylistData
+    public class PlaylistData : IPlaylistData
     {
         public string Title
         {
@@ -16,7 +16,7 @@ namespace TopTastic.Model
             set;
         }
 
-        public IList<BBCTop40PlaylistDataItem> Items
+        public IList<PlaylistDataItem> Items
         {
             get;
             set;
