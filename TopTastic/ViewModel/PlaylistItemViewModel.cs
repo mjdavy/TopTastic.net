@@ -57,12 +57,42 @@ namespace TopTastic.ViewModel
             }
         }
 
-        public string Position { get { return item.Position.ToString(); }}
-        public string Status { get { return item.Status.ToUpper(); } }
-        public string Previous { get { return item.Previous.ToString(); } }
+        public string Position
+        {
+            get
+            {
+                return (item.Position > 0 ? item.Position.ToString() : string.Empty);
+            }
+        }
+        public string Status
+        {
+            get
+            {
+                return string.IsNullOrEmpty(item.Status) ? string.Empty : item.Status.ToUpper();
+            }
+        }
+        public string Previous
+        {
+            get
+            {
+                return (item.Previous > 0 ? item.Previous.ToString() : string.Empty);
+            }
+        }
        
-        public string Artist { get { return item.Artist; } }
-        public string Title { get { return item.Title; } }
+        public string Artist
+        {
+            get
+            {
+                return item.Artist;
+            }
+        }
+        public string Title
+        {
+            get
+            {
+                return item.Title;
+            }
+        }
         public string Thumbnail
         {
             get

@@ -334,18 +334,19 @@ namespace TopTastic.ViewModel
                 
             });
         }
-        void CreateNewPlaylistFromSearchText(string searchText)
+        public void CreateNewPlaylistFromSearchText(string searchText)
         {
             this.AppBarStatusVisibilty = Visibility.Visible;
             this.AppBarStatusText = "Creating YouTube Playlist";
             this.AppBarStatusIndeterminate = true;
             this.PlaylistCreationInProgress = true;
-            _service.GetEchoNestPlaylistData(searchText, (playlistItems, err) =>
+            _service.GetEchoNestPlaylistData(searchText, (playlistData, err) =>
             {
                 if (err == null)
                 {
                     // MJDTODO
                     this.AppBarStatusVisibilty = Visibility.Collapsed;
+                    this.UpdatePlaylist(_service, playlistData);
                     
                 }
                 else

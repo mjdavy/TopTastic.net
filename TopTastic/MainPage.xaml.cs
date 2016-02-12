@@ -72,6 +72,8 @@ namespace TopTastic
         {
             this.SearchBox.Visibility = Visibility.Visible;
             this.SearchBox.Focus(FocusState.Keyboard);
+            var vm = this.DataContext as ViewModel.MainViewModel;
+            vm.SearchAction = vm.CreateNewPlaylistFromSearchText;
         }
 
     }
