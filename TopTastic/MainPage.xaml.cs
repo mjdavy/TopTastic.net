@@ -49,7 +49,12 @@ namespace TopTastic
                 if (!string.IsNullOrEmpty(searchText))
                 {
                     var vm = this.DataContext as ViewModel.MainViewModel;
-                    vm.SearchYouTube(searchText);
+                    var action = vm.SearchAction;
+
+                    if (action != null)
+                    { 
+                        action(searchText);
+                    }
                 }
             }
         }
@@ -58,6 +63,8 @@ namespace TopTastic
         {
             this.SearchBox.Visibility = Visibility.Visible;
             this.SearchBox.Focus(FocusState.Keyboard);
+            var vm = this.DataContext as ViewModel.MainViewModel;
+            vm.SearchAction = vm.SearchYouTube;
         }
 
         private void GeneralPlaylist_Click(object sender, RoutedEventArgs e)
@@ -65,5 +72,6 @@ namespace TopTastic
             this.SearchBox.Visibility = Visibility.Visible;
             this.SearchBox.Focus(FocusState.Keyboard);
         }
+
     }
 }

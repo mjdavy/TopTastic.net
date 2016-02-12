@@ -33,7 +33,7 @@ namespace TopTastic.ViewModel
 
         #region Properties
 
-        public Action SearchAction
+        public Action<string> SearchAction
         {
             get;
             set;
