@@ -370,9 +370,10 @@ namespace TopTastic.ViewModel
             {
                 if (err == null)
                 {
-                    // MJDTODO
                     System.Diagnostics.Debug.WriteLine(playlistId);
                     this.AppBarStatusVisibilty = Visibility.Collapsed;
+                    var playlistUri = new Uri("https://www.youtube.com/playlist?list=" + playlistId);
+                    LaunchUri(playlistUri);
                 }
                 else
                 {
