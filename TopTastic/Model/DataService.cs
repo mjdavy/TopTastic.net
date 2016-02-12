@@ -184,12 +184,15 @@ namespace TopTastic.Model
 
         public async void GetBBCPlaylistData(Action<PlaylistData, Exception> callback)
         {
-            await GetPlaylistData(PlaylistSourceFactory<BBCTop40PlaylistSource>.GetNewPlaylistSource(), callback);
+            var playlistSource = PlaylistSourceFactory<BBCTop40PlaylistSource>.GetNewPlaylistSource();
+            await GetPlaylistData(playlistSource, callback);
         }
 
         public async void GetEchoNestPlaylistData(string searchString, Action<PlaylistData, Exception> callback)
         {
-            await GetPlaylistData(PlaylistSourceFactory<EchoNestPlaylistSource>.GetNewPlaylistSource(), callback);
+            var playlistSource = PlaylistSourceFactory<EchoNestPlaylistSource>.GetNewPlaylistSource();
+            playlistSource.Query = searchString;
+            await GetPlaylistData(playlistSource, callback);
         }
 
         public async Task GetPlaylistData(IPlaylistSource playlistSource, Action<PlaylistData, Exception> callback)
