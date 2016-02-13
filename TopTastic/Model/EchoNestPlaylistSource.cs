@@ -6,12 +6,12 @@ using System.Linq;
 using System.Threading.Tasks;
 using Windows.Storage;
 using Windows.Data.Xml.Dom;
+using EchoNest.Song;
 
 namespace TopTastic.Model
 {
     public class EchoNestPlaylistSource : IPlaylistSource
     {
-      
         public string Query
         {
             get;
@@ -34,9 +34,83 @@ namespace TopTastic.Model
         }
         private PlaylistData CreateEchonestPlaylist(string apiKey)
         {
+            var query = Query.Replace('&', '+');
+            using (var session = new EchoNestSession(apiKey))
+            {
+                var searchReponse = GetArtistPlaylist(session, query);
+
+                // Do we have a match for the artist? If not look for a matching song
+                if (searchReponse.Songs != null && searchReponse.Songs.Count > 0)
+                {
+                    return CreatePlaylistDataFromEchoNestResponse(searchReponse);
+                }
+                else
+                {
+                    searchReponse = GetSongPlaylist(session, query);
+                    return CreatePlaylistDataFromEchoNestResponse(searchReponse);
+                }
+            }
+        }
+       
+        private PlaylistResponse GetSongPlaylist(EchoNestSession session, string query)
+        {
+            var id = GetSongId(session, query);
+            var songIds = new TermList();
+            songIds.Add(id);
+
+            StaticArgument staticArgument = new StaticArgument
+            {
+                Type = "song-radio",
+                SongID = songIds,
+                Results = 40,
+                Variety = 1
+            };
+
+            return session.Query<Static>().Execute(staticArgument);
+        }
+
+        private PlaylistData CreatePlaylistDataFromEchoNestResponse(PlaylistResponse searchResponse)
+        {
+            var playlistData = new PlaylistData();
+            playlistData.Items = new List<PlaylistDataItem>();
+            playlistData.Description = Query;
+            playlistData.Title = string.Format("{0} playlist", Query);
+            playlistData.SearchKeys = new List<string>();
+
+            foreach (var song in searchResponse.Songs)
+            {
+                var item = new PlaylistDataItem();
+                item.Artist = song.ArtistName;
+                item.Title = song.Title;
+                playlistData.Items.Add(item);
+
+                var searchKey = string.Format("{0} {1}", item.Artist, item.Title);
+                playlistData.SearchKeys.Add(searchKey);
+            }
+
+            return playlistData;
+        }
+
+        private string GetSongId(EchoNestSession session, string title)
+        {
+            SearchArgument searchArgument = new SearchArgument
+            {
+                Title = title
+            };
+
+            SearchResponse searchResponse = session.Query<Search>().Execute(searchArgument);
+            return searchResponse.Songs.Count > 0 ? searchResponse.Songs.First().ID : string.Empty;
+        }
+
+        private PlaylistResponse GetArtistPlaylist(EchoNestSession session, string query)
+        {
+            
             var seedArtists = new TermList();
 
-            seedArtists.Add(Query);
+            foreach (var term in query.Split(','))
+            {
+                seedArtists.Add(term);
+            }
 
             StaticArgument staticArgument = new StaticArgument
             {
@@ -45,28 +119,7 @@ namespace TopTastic.Model
                 Type = "artist-radio"
             };
 
-            using (var session = new EchoNestSession(apiKey))
-            {
-                PlaylistResponse searchResponse = session.Query<Static>().Execute(staticArgument);
-                var playlistData = new PlaylistData();
-                playlistData.Items = new List<PlaylistDataItem>();
-                playlistData.Description = Query;
-                playlistData.Title = string.Format("{0} playlist", Query);
-                playlistData.SearchKeys = new List<string>();
-
-                foreach (var song in searchResponse.Songs)
-                {
-                    var item = new PlaylistDataItem();
-                    item.Artist = song.ArtistName;
-                    item.Title = song.Title;
-                    playlistData.Items.Add(item);
-
-                    var searchKey = string.Format("{0} {1}", item.Artist, item.Title);
-                    playlistData.SearchKeys.Add(searchKey);
-                }
-
-                return playlistData;
-            }
+            return session.Query<Static>().Execute(staticArgument);
         }
 
         private PlaylistData CreateTestlist()

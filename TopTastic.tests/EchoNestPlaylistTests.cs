@@ -88,11 +88,11 @@ namespace TopTastic.tests
             }
         }
 
-        [DataRow("Oceanlab")]
         [DataRow("Above & Beyond")]
         [TestMethod]
         public void GetPlaylistByArtistOrSong(string query)
         {
+            query = query.Replace("&", "+");
             var seedArtists = new TermList();
             seedArtists.Add(query);
 
