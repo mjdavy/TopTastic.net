@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Windows.Storage;
 using EchoNest;
 using Google.Apis.YouTube.v3;
+using MyToolkit.Multimedia;
 
 namespace TopTastic.Model
 {
@@ -83,9 +84,8 @@ namespace TopTastic.Model
 
             try
             {
-                videoUri = await YoutubeExtractor.DownloadUrlResolver.GetVideoUriAsync(videoId);
-                //var youTubeUri = await YouTube.GetVideoUriAsync(videoId, YouTubeQuality.Quality720P);
-                //videoUri = youTubeUri.Uri;
+                var youTubeUri = await YouTube.GetVideoUriAsync(videoId, YouTubeQuality.Quality720P);
+                videoUri = youTubeUri.Uri;
             }
             catch (Exception e)
             {

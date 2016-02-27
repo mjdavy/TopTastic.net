@@ -13,6 +13,7 @@ using System.IO;
 using System.Diagnostics;
 using Windows.Media.Transcoding;
 using Windows.Media.MediaProperties;
+using MyToolkit.Multimedia;
 
 namespace TopTastic.Model
 {
@@ -256,9 +257,8 @@ namespace TopTastic.Model
 
             try
             {
-                videoUri = await YoutubeExtractor.DownloadUrlResolver.GetVideoUriAsync(videoId);
-                //var youTubeUri = await YouTube.GetVideoUriAsync(videoId, YouTubeQuality.Quality720P);
-                //videoUri = youTubeUri.Uri;
+                var youTubeUri = await YouTube.GetVideoUriAsync(videoId, YouTubeQuality.Quality720P);
+                videoUri = youTubeUri.Uri;
             }
             catch(Exception e)
             {
