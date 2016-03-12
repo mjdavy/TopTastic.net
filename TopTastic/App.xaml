@@ -7,7 +7,7 @@
     mc:Ignorable="d"
     xmlns:local="using:TopTastic"
     xmlns:vm="using:TopTastic.ViewModel"
-    RequestedTheme="Light" 
+    RequestedTheme="Dark"
     >
 
     <Application.Resources>
