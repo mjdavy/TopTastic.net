@@ -97,6 +97,7 @@
     <SDKReference Include="TestPlatform.Universal, Version=$(UnitTestPlatformVersion)" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ViewModelTests.cs" />
     <Compile Include="DataServiceTests.cs" />
     <Compile Include="EchoNestArtistTests.cs" />
     <Compile Include="EchoNestPlaylistTests.cs" />

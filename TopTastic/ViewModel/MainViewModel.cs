@@ -386,7 +386,7 @@ namespace TopTastic.ViewModel
             });
         }
 
-        void DownloadMedia(bool extractAudio)
+        private void DownloadMedia(bool extractAudio)
         {
             this.AppBarStatusVisibilty = Visibility.Visible;
             this.AppBarStatusText = "Downloading Media";
@@ -411,12 +411,12 @@ namespace TopTastic.ViewModel
                 this.DownloadMediaInProgress = false;
             });
         }
-        void DownloadVideo()
+        public void DownloadVideo()
         {
             DownloadMedia(false);
         }
 
-        void DownloadAudio()
+        public void DownloadAudio()
         {
             DownloadMedia(true);
         }
