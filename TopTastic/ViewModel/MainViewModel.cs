@@ -29,26 +29,13 @@ namespace TopTastic.ViewModel
         private bool _appbarStatusIndeterminate;
         private bool _playlistCreationInProgress;
         private bool _downloadMediaInProgress;
-        private string _searchBoxPlaceHolderText;
+
 
         #region Properties
 
-        public Action<string> SearchAction
+        public void Search(SearchMessage message)
         {
-            get;
-            set;
-        }
 
-        public string SearchBoxPlaceHolderText
-        {
-            get
-            {
-                return _searchBoxPlaceHolderText;
-            }
-            set
-            {
-                Set(() => SearchBoxPlaceHolderText, ref _searchBoxPlaceHolderText, value);
-            }
         }
 
         public ObservableCollection<PlaylistItemViewModel> PlaylistItems
@@ -234,7 +221,7 @@ namespace TopTastic.ViewModel
 
         #region Commands
 
-        public RelayCommand SearchYouTubeCommand
+        public RelayCommand SearchCommand
         {
             get;
             private set;
@@ -265,7 +252,7 @@ namespace TopTastic.ViewModel
         private void CreatCommands()
         {
             this.CreateNewPlaylistCommmand = new RelayCommand(CreateNewPlayList, CanCreateNewPlaylist);
-            this.SearchYouTubeCommand = new RelayCommand(SearchYouTube, CanSearchYoutube);
+            this.SearchCommand = new RelayCommand(Search, CanSearch);
             this.CreateYoutubePlaylistCommand = new RelayCommand(SharePlaylistOnYouTube, CanCreatePlaylist);
             this.DownloadVideoCommand = new RelayCommand(DownloadVideo, CanDownloadVideo);
             this.DownloadAudioCommand = new RelayCommand(DownloadAudio, CanDownloadAudio);
@@ -281,7 +268,7 @@ namespace TopTastic.ViewModel
             throw new NotImplementedException();
         }
 
-        private bool CanSearchYoutube()
+        private bool CanSearch()
         {
             return true;
         }
@@ -305,7 +292,7 @@ namespace TopTastic.ViewModel
 
         }
 
-        public void SearchYouTube()
+        public void Search()
         {
            
         }

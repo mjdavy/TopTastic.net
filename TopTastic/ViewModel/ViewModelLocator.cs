@@ -1,4 +1,5 @@
 ﻿using GalaSoft.MvvmLight.Ioc;
+using GalaSoft.MvvmLight.Messaging;
 using Microsoft.Practices.ServiceLocation;
 using System;
 using System.Collections.Generic;
@@ -23,6 +24,8 @@ namespace TopTastic.ViewModel
         {
             ServiceLocator.SetLocatorProvider(() => SimpleIoc.Default);
             SimpleIoc.Default.Register<MainViewModel>();
+            var main = ServiceLocator.Current.GetInstance<MainViewModel>();
+            Messenger.Default.Register<SearchMessage>(main, main.Search);
         }
 
     }

@@ -19,8 +19,7 @@
                     <TextBlock x:Name="textBlock" Margin="0" Text="{Binding AppBarStatusText}"/>
                 </StackPanel>
             </CommandBar.Content>
-            <AppBarButton Icon="Find" Label="Search YouTube" Command="{Binding SearchYouTubeCommand}" Click="SearchYouTube_Click"/>
-            <AppBarButton Icon="Bookmarks" Label="Generate playlist" Command="{Binding CreateNewPlaylistCommand}" Click="GeneralPlaylist_Click"/>
+            <AppBarButton Icon="Find" Label="Search" Command="{Binding SearchCommand}"/>
             <AppBarButton Icon="ReShare" Label="Share Playlist to YouTube" Command="{Binding CreateYoutubePlaylistCommand}" />
             <AppBarButton Icon="Video" Label="Download Video" Command="{Binding DownloadVideoCommand}"/>
             <AppBarButton Icon="Audio" Label="Download Audio" Command="{Binding DownloadAudioCommand}"/>
@@ -72,42 +71,30 @@
         </StackPanel>
 
         <Border x:Name="border" Grid.Column="1" Margin="0" BorderThickness="0" Background="#FF5A5A5A">
-            <StackPanel>
-                <Grid>
-                    <TextBox x:Name="SearchBox" 
-                        KeyDown="TextBox_KeyDown"
-                        PlaceholderText="Search YouTube"
-                        AcceptsReturn="False"
-                        ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                        ScrollViewer.VerticalScrollBarVisibility="Disabled" 
-                        IsDoubleTapEnabled="False" 
-                        IsHoldingEnabled="False" 
-                        IsRightTapEnabled="False" 
-                        IsTapEnabled="False" 
-                        TextWrapping="NoWrap" 
-                        Visibility="Collapsed"
-                        />
-                </Grid>
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="5*"/>
-                        <RowDefinition Height="400"/>
-                        <RowDefinition Height="35*"/>
-                    </Grid.RowDefinitions>
-                    <TextBlock Grid.Row="0" Text="{Binding SelectedItem.ArtistAndTitle, Mode=OneWay}" Style="{StaticResource TitleTextBlockStyle}" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                    <MediaElement x:Name="player"  Grid.Row="1" MediaEnded="player_MediaEnded" MediaFailed="player_MediaFailed" MediaOpened="player_MediaOpened"
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="7*"/>
+                    <RowDefinition Height="3*"/>
+                </Grid.RowDefinitions>
+                <MediaElement 
+                       x:Name="player" 
+                        Margin="8"
+                        Grid.Row="0" 
+                        MediaEnded="player_MediaEnded" 
+                        MediaFailed="player_MediaFailed" 
+                        MediaOpened="player_MediaOpened"
             		    AreTransportControlsEnabled="True"
             		    Source="{Binding PlayerUri}" 
             		    HorizontalAlignment="Left" VerticalAlignment="Top">
-                        <MediaElement.TransportControls>
-                            <MediaTransportControls IsCompact="True" Background="#FF7D7D7D"/>
-                        </MediaElement.TransportControls>
-                    </MediaElement>
-                    <ScrollViewer Grid.Row="2" Margin="10,0,10,0" >
-                        <TextBlock Text="{Binding ArtistInfo}" Foreground="White" TextWrapping="Wrap" />
-                    </ScrollViewer>
-                </Grid>
-            </StackPanel>
+                    <MediaElement.TransportControls>
+                        <MediaTransportControls IsCompact="True" Background="#FF7D7D7D"/>
+                    </MediaElement.TransportControls>
+                </MediaElement>
+                <ScrollViewer Grid.Row="1" Margin="10,0,10,0" >
+                    <TextBlock Text="{Binding ArtistInfo}" Foreground="White" TextWrapping="Wrap" />
+                </ScrollViewer>
+            </Grid>
+
         </Border>
     </Grid>
 </Page>
