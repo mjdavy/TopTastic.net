@@ -14,7 +14,7 @@ namespace TopTastic.Model
         void GetYoutubeVideoUri(string videoId, Action<Uri, Exception> callback);
         void SharePlaylistOnYouTube(IPlaylistData playlistData, Action<string, Exception> callback);
         void DownloadMedia(Uri videoUri, string artist, string title, bool extractAudio, Action <string, Exception> callback);
-        void SearchYouTube(string artist, string title, Action<PlaylistData, Exception> callback);
+        void SearchYouTube(string searchString, Action<string, Exception> callback);
         void GetEchoNestPlaylistData(string searchString, Action<PlaylistData, Exception> callback);
     }
 }

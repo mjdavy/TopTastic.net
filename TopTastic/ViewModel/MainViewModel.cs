@@ -294,7 +294,10 @@ namespace TopTastic.ViewModel
 
         public void OnSearch(SearchMessage message)
         {
-
+            if (message != null)
+            { 
+                SearchYouTube(message.Artist, message.Title);
+            }
         }
 
         public void SearchYouTube(string artist, string title)
@@ -304,24 +307,8 @@ namespace TopTastic.ViewModel
             this.AppBarStatusVisibilty = Visibility.Visible;
             this.AppBarStatusText = "Searching YouTube";
             this.AppBarStatusIndeterminate = true;
-            _service.SearchYouTube(artist, title, (playlistData, err) =>
-            {
-                if (err == null)
-                {
-                    this.AppBarStatusVisibilty = Visibility.Collapsed;
-                    this.UpdatePlaylist(_service, playlistData);
-                    this.SelectedItem = this.PlaylistItems.FirstOrDefault();
-                    this.PlayVideo(_service, SelectedItem.VideoId);
-                }
-                else
-                {
-                    /// if there is an error should create a property and bind to it for better practices
-                    System.Diagnostics.Debug.WriteLine(err.ToString());
-                    this.AppBarStatusError = true;
-                    this.AppBarStatusText = "YouTube search failed.";
-                }
-                
-            });
+            var playlistData = this.CreatePlaylistDataFromArtistAndTitle(artist, title);
+            this.UpdatePlaylist(_service, playlistData, 0);
         }
         public void CreateNewPlaylistFromSearchText(string searchText)
         {
@@ -449,7 +436,7 @@ namespace TopTastic.ViewModel
 
         }
 
-        void UpdatePlaylist(IDataService service, PlaylistData playlistData)
+        void UpdatePlaylist(IDataService service, PlaylistData playlistData, int selectedIndex = -1)
         {
             var playlistItems = new ObservableCollection<PlaylistItemViewModel>();
             foreach (var item in playlistData.Items)
@@ -458,7 +445,7 @@ namespace TopTastic.ViewModel
             }
             this._playlistData = playlistData;
             this.PlaylistItems = playlistItems;
-            this.UpdateVideoInfo(service, playlistData);
+            this.UpdateVideoInfo(service, playlistData, selectedIndex);
         }
 
         void InitializePlaylistItems(IDataService service)
@@ -481,7 +468,7 @@ namespace TopTastic.ViewModel
         #endregion
 
         #region Methods
-        void UpdateVideoInfo(IDataService service, PlaylistData playlistData)
+        void UpdateVideoInfo(IDataService service, PlaylistData playlistData, int selectedIndex = -1)
         {
             service.GetVideoInfo(playlistData, (videos, err) =>
              {
@@ -492,6 +479,11 @@ namespace TopTastic.ViewModel
                          PlaylistItems[video.Index].VideoId = video.VideoId;
                          PlaylistItems[video.Index].Thumbnail = video.ThumbnailUrl;
                          PlaylistItems[video.Index].VideoId = video.VideoId;
+                     }
+
+                     if (selectedIndex > 0 && selectedIndex < PlaylistItems.Count)
+                     {
+                         this.SelectedItem = PlaylistItems[selectedIndex];
                      }
                  }
                  else
@@ -536,6 +528,22 @@ namespace TopTastic.ViewModel
                 }
             });
 
+        }
+
+        PlaylistData CreatePlaylistDataFromArtistAndTitle(string artist, string title)
+        {
+            var playlistData = new PlaylistData();
+            playlistData.Items = new List<PlaylistDataItem>();
+            var searchKey = string.Format("{0} - {1}", artist, title);
+            playlistData.Description = searchKey;
+            playlistData.Title = searchKey;
+            playlistData.SearchKeys = new List<string>();
+            var item = new PlaylistDataItem();
+            item.Artist = artist;
+            item.Title = title;
+            playlistData.Items.Add(item);
+            playlistData.SearchKeys.Add(searchKey);
+            return playlistData;
         }
         #endregion
     }

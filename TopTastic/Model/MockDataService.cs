@@ -95,7 +95,7 @@ namespace TopTastic.Model
             callback(videoUri, ex);
         }
 
-        public void SearchYouTube(string artist,  string title, Action<PlaylistData, Exception> callback)
+        public void SearchYouTube(string searchString, Action<string, Exception> callback)
         {
             throw new NotImplementedException();
         }

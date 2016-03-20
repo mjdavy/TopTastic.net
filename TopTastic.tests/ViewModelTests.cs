@@ -19,7 +19,7 @@ namespace TopTastic.tests
             var vm = new MainViewModel();
             var artist = "Justin Timberlake";
             var title = "My Love";
-            var name = string.Format("{0}- {1}", artist, title);
+            var name = string.Format("{0} - {1}", artist, title);
 
             var exists = await MediaFileExists(KnownLibraryId.Music, name + ".mp3");
             Assert.IsFalse(exists);
