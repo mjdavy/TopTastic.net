@@ -10,13 +10,14 @@
     d:DesignHeight="300"
     d:DesignWidth="400" Width="300" Height="200">
 
-    <Grid>
+    <Grid Background="#FF5A5A5A">
         <Grid.DataContext>
-            <ViewModel:SearchViewModel/>
+            <Binding Path="Search" Source="{StaticResource Locator}"/>
         </Grid.DataContext>
-        <Button x:Name="CancelButton" Content="Cancel" HorizontalAlignment="Right" Margin="0,0,10,10" VerticalAlignment="Bottom"/>
-        <Button x:Name="GoButton" Content="Go" HorizontalAlignment="Right" Margin="0,0,80,10" VerticalAlignment="Bottom"/>
-        <TextBox x:Name="textBox" Margin="10,34,10,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" d:LayoutOverrides="VerticalAlignment, LeftPosition, RightPosition" PlaceholderText="Artist"/>
-        <TextBox x:Name="textBox1" Margin="10,71,10,97" TextWrapping="Wrap" Text="TextBox" d:LayoutOverrides="VerticalAlignment, Height, LeftPosition, RightPosition, TopPosition, BottomPosition" PlaceholderText="Title"/>
+        <Button x:Name="CancelButton" Content="Cancel" Command="{Binding CancelCommand}" HorizontalAlignment="Right" Margin="0,0,10,10" VerticalAlignment="Bottom" TabIndex="3"/>
+        <Button x:Name="GoButton" Content="Go" Command="{Binding GoCommand}" HorizontalAlignment="Right" Margin="0,0,80,10" VerticalAlignment="Bottom" TabIndex="2"/>
+        <TextBox x:Name="ArtistTextBox" Margin="10,58,10,0" TextWrapping="Wrap" Text="{Binding Artist, Mode=TwoWay}" VerticalAlignment="Top" PlaceholderText="Artist" TabIndex="1"/>
+        <TextBox x:Name="TitleTextBox" Margin="10,95,10,73" TextWrapping="Wrap" Text="{Binding Title, Mode=TwoWay}" PlaceholderText="Song" TabIndex="1"/>
+        <TextBlock x:Name="textBlock" HorizontalAlignment="Left" TextWrapping="Wrap" Text="Search by artist, song or exact match" VerticalAlignment="Top" Margin="8"/>
     </Grid>
 </UserControl>

@@ -17,15 +17,17 @@ namespace TopTastic.tests
         public async Task DownloadAudio()
         {
             var vm = new MainViewModel();
-            var searchText = "Justin Timberlake - My Love";
+            var artist = "Justin Timberlake";
+            var title = "My Love";
+            var name = string.Format("{0}- {1}", artist, title);
 
-            var exists = await MediaFileExists(KnownLibraryId.Music, searchText + ".mp3");
+            var exists = await MediaFileExists(KnownLibraryId.Music, name + ".mp3");
             Assert.IsFalse(exists);
 
-            vm.SearchYouTube(searchText);
+            vm.SearchYouTube(artist, title);
             vm.DownloadAudio();
 
-            exists = await MediaFileExists(KnownLibraryId.Music, searchText + ".mp3");
+            exists = await MediaFileExists(KnownLibraryId.Music, name + ".mp3");
             Assert.IsTrue(exists);
         }
 

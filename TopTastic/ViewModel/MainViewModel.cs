@@ -33,11 +33,6 @@ namespace TopTastic.ViewModel
 
         #region Properties
 
-        public void Search(SearchMessage message)
-        {
-
-        }
-
         public ObservableCollection<PlaylistItemViewModel> PlaylistItems
         {
             get
@@ -294,22 +289,29 @@ namespace TopTastic.ViewModel
 
         public void Search()
         {
-           
+            MessengerInstance.Send(new SearchMessage(), 0);
         }
 
-        public void SearchYouTube(string searchText)
+        public void OnSearch(SearchMessage message)
+        {
+
+        }
+
+        public void SearchYouTube(string artist, string title)
         {
             this.SelectedItem = null;
             this.ArtistInfo = null;
             this.AppBarStatusVisibilty = Visibility.Visible;
             this.AppBarStatusText = "Searching YouTube";
             this.AppBarStatusIndeterminate = true;
-            _service.SearchYouTube(searchText, (videoId, err) =>
+            _service.SearchYouTube(artist, title, (playlistData, err) =>
             {
                 if (err == null)
                 {
                     this.AppBarStatusVisibilty = Visibility.Collapsed;
-                    this.PlayVideo(_service, videoId);
+                    this.UpdatePlaylist(_service, playlistData);
+                    this.SelectedItem = this.PlaylistItems.FirstOrDefault();
+                    this.PlayVideo(_service, SelectedItem.VideoId);
                 }
                 else
                 {
@@ -331,7 +333,6 @@ namespace TopTastic.ViewModel
             {
                 if (err == null)
                 {
-                    // MJDTODO
                     this.AppBarStatusVisibilty = Visibility.Collapsed;
                     this.UpdatePlaylist(_service, playlistData);
                     
@@ -379,6 +380,11 @@ namespace TopTastic.ViewModel
             this.AppBarStatusText = "Downloading Media";
             this.AppBarStatusIndeterminate = true;
             this.DownloadMediaInProgress = true;
+
+            if (this.SelectedItem == null)
+            {
+                return;
+            }
 
             _service.DownloadMedia(this.PlayerUri, this.SelectedItem.Artist, this.SelectedItem.Title, extractAudio, (status, err) =>
             {

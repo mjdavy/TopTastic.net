@@ -20,12 +20,34 @@ namespace TopTastic.ViewModel
             }
         }
 
+        public SearchViewModel Search
+        {
+            get
+            {
+                return ServiceLocator.Current.GetInstance<SearchViewModel>();
+            }
+        }
+
         static ViewModelLocator()
+        {
+            RegisterViewModels();
+            RegisterMessages();
+        }
+
+        static void RegisterViewModels()
         {
             ServiceLocator.SetLocatorProvider(() => SimpleIoc.Default);
             SimpleIoc.Default.Register<MainViewModel>();
+            SimpleIoc.Default.Register<SearchViewModel>();
+        }
+
+        static void RegisterMessages()
+        {
             var main = ServiceLocator.Current.GetInstance<MainViewModel>();
-            Messenger.Default.Register<SearchMessage>(main, main.Search);
+            Messenger.Default.Register<SearchMessage>(main, 1, main.OnSearch);
+
+            var search = ServiceLocator.Current.GetInstance<SearchViewModel>();
+            Messenger.Default.Register<SearchMessage>(search, 0, search.Open);
         }
 
     }

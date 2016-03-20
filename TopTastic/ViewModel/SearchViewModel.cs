@@ -12,8 +12,9 @@ namespace TopTastic.ViewModel
 {
     public class SearchViewModel : ViewModelBase
     {
-        private Visibility _visibility = Visibility.Visible;
-        
+        private bool _isOpen;
+        private string _artist;
+        private string _title;
 
         public SearchViewModel()
         {
@@ -22,25 +23,39 @@ namespace TopTastic.ViewModel
         }
         public string Artist
         {
-            get;
-            set;
+            get
+            {
+                return _artist;
+            }
+            set
+            {
+                Set(() => Artist, ref _artist, value);
+                GoCommand.RaiseCanExecuteChanged();
+            }
         }
 
         public string Title
         {
-            get;
-            set;
-        }
-
-        public Visibility Visibility
-        {
             get
             {
-                return _visibility;
+                return _title;
             }
             set
             {
-                Set(() => Visibility, ref _visibility, value);
+                Set(() => Title, ref _title, value);
+                GoCommand.RaiseCanExecuteChanged();
+            }
+        }
+
+        public bool IsOpen
+        {
+            get
+            {
+                return _isOpen;
+            }
+            set
+            {
+                Set(() => IsOpen, ref _isOpen, value);
             }
         }
 
@@ -56,19 +71,29 @@ namespace TopTastic.ViewModel
             private set;
         }
 
+        public void Open(SearchMessage msg)
+        {
+            if (msg != null)
+            {
+                this.Artist = msg.Artist;
+                this.Title = msg.Title;
+            }
+            this.IsOpen = true;
+        }
+
         public void Go()
         {
-            this.Visibility = Visibility.Collapsed;
+            IsOpen = false;
             var msg = new SearchMessage() { Artist = this.Artist, Title = this.Title };
-            MessengerInstance.Send<SearchMessage>(msg);
+            MessengerInstance.Send(msg, 1);
         }
 
         public void Cancel()
         {
-            Visibility = Visibility.Collapsed;
+            IsOpen = false;
         }
 
-        public Boolean CanGo()
+        public bool CanGo()
         {
             return !(string.IsNullOrEmpty(Artist) && string.IsNullOrEmpty(Title));
         }

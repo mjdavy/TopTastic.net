@@ -6,6 +6,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:Interactivity="using:Microsoft.Xaml.Interactivity"
     xmlns:Core="using:Microsoft.Xaml.Interactions.Core"
+    xmlns:vw="using:TopTastic.View"
     x:Class="TopTastic.MainPage"
     mc:Ignorable="d">
     <Page.Resources>
@@ -58,6 +59,16 @@
             <ColumnDefinition Width="4*" x:Name="MasterColumn"/>
             <ColumnDefinition Width="6*" x:Name="DetailColumn"/>
         </Grid.ColumnDefinitions>
+
+        <Popup x:Name="SearchPopup" 
+               VerticalOffset="10" 
+               HorizontalOffset="10"
+               IsOpen="{Binding IsOpen}">
+            <Popup.DataContext>
+                <Binding Path="Search" Source="{StaticResource Locator}"/>
+            </Popup.DataContext>
+            <vw:Search />
+        </Popup>
 
         <ListView x:Name="MasterListView"
                   ItemTemplate="{StaticResource BBCTop40PlaylistDataItemTemplate}"

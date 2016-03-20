@@ -277,22 +277,39 @@ namespace TopTastic.Model
             return nodes[0].InnerText;
         }
 
-        public async void SearchYouTube(string searchString, Action<string, Exception> callback)
+        public async void SearchYouTube(string artist, string title, Action<PlaylistData, Exception> callback)
         {
             Exception ex = null;
             string videoId = null;
+            var searchKey = string.Format("{0} - {1}", artist, title);
 
             try
             {
                 YouTubeService service = YouTubeHelper.CreateService("Top40");
-                videoId = await YouTubeHelper.FindVideoId(service, searchString);
+                videoId = await YouTubeHelper.FindVideoId(service, searchKey);
             }
             catch (Exception e)
             {
                 ex = e;
             }
 
-            callback(videoId, ex);
+            var playlist = CreatePlaylistDataFromYoutubeSearch(searchKey, artist, title, videoId);
+            callback(playlist, ex);
+        }
+
+        private PlaylistData CreatePlaylistDataFromYoutubeSearch(string searchKey, string artist, string title, string videoId)
+        {
+            var playlistData = new PlaylistData();
+            playlistData.Items = new List<PlaylistDataItem>();
+            playlistData.Description = searchKey;
+            playlistData.Title = searchKey;
+            playlistData.SearchKeys = new List<string>();
+            var item = new PlaylistDataItem();
+            item.Artist = artist;
+            item.Title = title;
+            playlistData.Items.Add(item);
+            playlistData.SearchKeys.Add(searchKey);
+            return playlistData;
         }
 
     }
