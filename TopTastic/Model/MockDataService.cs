@@ -4,6 +4,7 @@ using Windows.Storage;
 using EchoNest;
 using Google.Apis.YouTube.v3;
 using MyToolkit.Multimedia;
+using System.Threading.Tasks;
 
 namespace TopTastic.Model
 {
@@ -14,7 +15,7 @@ namespace TopTastic.Model
             throw new NotImplementedException();
         }
 
-        public void DownloadMedia(Uri videoUri, string artist, string title, bool extractAudio, Action<string, Exception> callback)
+        public async Task DownloadMedia(Uri videoUri, string artist, string title, bool extractAudio, Action<string, Exception> callback)
         {
             throw new NotImplementedException();
         }

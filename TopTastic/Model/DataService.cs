@@ -44,7 +44,7 @@ namespace TopTastic.Model
         }
 
         // MJDTODO - refactor
-        public async void DownloadMedia(Uri videoUri, string artist,  string title, bool extractAudio, Action<string, Exception> callback)
+        public async Task DownloadMedia(Uri videoUri, string artist,  string title, bool extractAudio, Action<string, Exception> callback)
         {
             string status = null;
             Exception ex = null;
@@ -91,7 +91,11 @@ namespace TopTastic.Model
                 ex = e;
             }
 
-            callback(status, ex);
+            if (callback != null)
+            {
+                callback(status, ex);
+            }
+            
         }
 
         public async void ExtractAudio(string artist, string title, StorageFile videoFile, StorageFile audioFile)

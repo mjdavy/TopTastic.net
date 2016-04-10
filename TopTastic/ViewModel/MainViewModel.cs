@@ -296,11 +296,12 @@ namespace TopTastic.ViewModel
         {
             if (message != null)
             { 
-                SearchYouTube(message.Artist, message.Title);
+                var playlistData = SearchYouTube(message.Artist, message.Title);
+                this.UpdatePlaylist(_service, playlistData, 0);
             }
         }
 
-        public void SearchYouTube(string artist, string title)
+        public PlaylistData SearchYouTube(string artist, string title)
         {
             this.SelectedItem = null;
             this.ArtistInfo = null;
@@ -308,7 +309,7 @@ namespace TopTastic.ViewModel
             this.AppBarStatusText = "Searching YouTube";
             this.AppBarStatusIndeterminate = true;
             var playlistData = this.CreatePlaylistDataFromArtistAndTitle(artist, title);
-            this.UpdatePlaylist(_service, playlistData, 0);
+            return playlistData;
         }
         public void CreateNewPlaylistFromSearchText(string searchText)
         {
